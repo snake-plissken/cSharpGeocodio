@@ -16,6 +16,7 @@ namespace GeoCodio
         public string Country { get; set; }
     }
 
+
     public class Location
     {
         [JsonProperty("lat")]
@@ -247,6 +248,36 @@ namespace GeoCodio
     {
         public House House { get; set; }
         public Senate Senate { get; set; }
+    }
+
+    public class ForwardGeoCodeResult
+    {
+        [JsonProperty("address_components")]
+        public AddressComponent AddressComponents { get; set; }
+        [JsonProperty("formatted_address")]
+        public string FormattedAddress { get; set; }
+        public Location Location { get; set; }
+        public double Accuracy { get; set; }
+        [JsonProperty("accuracy_type")]
+        public string AccuracyType { get; set; }
+        public string Source { get; set; }
+        public Fields Fields { get; set; }
+
+    }
+
+    public class ForwardGeoCodeInput
+    {
+        [JsonProperty("address_components")]
+        public AddressComponent AddressComponents { get; set; }
+        [JsonProperty("formatted_address")]
+        public string FormattedAddress { get; set; }
+    }
+
+    public class ForwardGeoCodedRecord
+    {
+        public ForwardGeoCodeInput Input { get; set; }
+        [JsonProperty("formatted_address")]
+        public ForwardGeoCodeResult[] Results { get; set; }
     }
 
     public class ReverseGeoCodedRecord

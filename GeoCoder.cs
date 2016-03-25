@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Web;
@@ -11,9 +12,11 @@ namespace GeoCodio
     /// <summary>
     /// The GeoCoder class.
     /// </summary>
-    class GeoCoder
+    public class GeoCoder
     {
         private string apiKey;
+        private string forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode";
+        private string forwardGeoCodequery = "?q={0}&api_key={1}";
         private string reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
         private string singleReverseGeoCodeQuery = "reverse?q={0},{1}&api_key={2}";
         private string batchReverseGeocodeQuery = "reverse?api_key={0}";
@@ -21,6 +24,32 @@ namespace GeoCodio
         public GeoCoder(string apiKey)
         {
             this.apiKey = apiKey;
+        }
+   
+        public string ForwardGeocodeSync (string fullAddress, bool queryCongressionalDistrict
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+        {
+            string urlEndodedAddress = HttpUtility.UrlEncode(fullAddress);
+            string queryString = String.Format(forwardGeoCodequery, urlEndodedAddress, apiKey);
+
+            string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
+                , querySchoolDistricts, queryTimeZone);
+
+            queryString += queryFields;
+
+            string url = forwardGeoCodeBaseUrl + queryString;
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(forwardGeoCodeBaseUrl);
+
+            HttpResponseMessage httpResponse = httpClient.GetAsync(queryString).Result;
+            int returnStatusCode = (int)httpResponse.StatusCode;
+            if (returnStatusCode != 200)
+            {
+                throw new GeocodingException(returnStatusCode);
+            }
+
+            return httpResponse.Content.ReadAsStringAsync().Result;
         }
 
         /// <summary>
