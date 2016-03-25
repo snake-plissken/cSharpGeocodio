@@ -267,7 +267,7 @@ namespace GeoCodio
     public class ForwardGeoCodeRecord
     {
         [JsonProperty("address_components")]
-        public ForwardGeoCodeAddressComponent AddressComponent { get; set; }
+        public ForwardGeoCodeAddressComponent AddressComponents { get; set; }
         [JsonProperty("formatted_address")]
         public string FormattedAddress { get; set; }
         public Location Location { get; set; }
@@ -287,10 +287,9 @@ namespace GeoCodio
         public string FormattedAddress { get; set; }
     }
 
-    public class ForwardGeoCodedResult
+    public class ForwardGeoCodeResult
     {
         public ForwardGeoCodeInput Input { get; set; }
-        [JsonProperty("formatted_address")]
         public ForwardGeoCodeRecord[] Results { get; set; }
     }
 
