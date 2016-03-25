@@ -263,6 +263,19 @@ namespace GeoCodio
         public Fields Fields { get; set; }
     }
 
+    public class Input
+    {
+        [JsonProperty("address_components")]
+        public AddressComponent AddressComponents { get; set; }
+    }
+
+    public class ForwardGeoCodedRecord
+    {
+        public Input Input { get; set; }
+        [JsonProperty("formatted_address")]
+        public string FormattedAddress { get; set; }
+    }
+
     public class SingleReverseGeoCodeResult
     {
         public ReverseGeoCodedRecord[] Results { get; set; }
