@@ -1,9 +1,10 @@
 ## A wrapper to access Geocodio, a geocoding service.  
 
-#See: https://geocod.io/
+# See: https://geocod.io/
 
 Usage:
-'''
+
+'''c#
 //Single forward geocode:
 string singleAddress = "2100 East Market Street, Philadelphia, PA 19103";
 GeoCoder geoCoder = new geoCoder('Your Grocodio API key.  You get 2500 free lookups per day!');
