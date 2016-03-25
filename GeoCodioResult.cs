@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GeoCodio
 {
@@ -8,15 +9,14 @@ namespace GeoCodio
         public string Street { get; set; }
         public string Suffix { get; set; }
         [JsonProperty("formatted_street")]
-        public string Formatted_street { get; set; }
+        public string FormattedStreet { get; set; }
         public string City { get; set; }
         public string County { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
         public string Country { get; set; }
     }
-
-
+    
     public class Location
     {
         [JsonProperty("lat")]
@@ -250,10 +250,24 @@ namespace GeoCodio
         public Senate Senate { get; set; }
     }
 
-    public class ForwardGeoCodeResult
+    public class ForwardGeoCodeAddressComponent
+    {
+        public string Number { get; set; }
+        public string Street { get; set; }
+        public string Suffix { get; set; }
+        [JsonProperty("formatted_street")]
+        public string FormattedStreet { get; set; }
+        public string City { get; set; }
+        public string County { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+        public string Country { get; set; }
+    }
+
+    public class ForwardGeoCodeRecord
     {
         [JsonProperty("address_components")]
-        public AddressComponent AddressComponents { get; set; }
+        public ForwardGeoCodeAddressComponent AddressComponent { get; set; }
         [JsonProperty("formatted_address")]
         public string FormattedAddress { get; set; }
         public Location Location { get; set; }
@@ -273,11 +287,11 @@ namespace GeoCodio
         public string FormattedAddress { get; set; }
     }
 
-    public class ForwardGeoCodedRecord
+    public class ForwardGeoCodedResult
     {
         public ForwardGeoCodeInput Input { get; set; }
         [JsonProperty("formatted_address")]
-        public ForwardGeoCodeResult[] Results { get; set; }
+        public ForwardGeoCodeRecord[] Results { get; set; }
     }
 
     public class ReverseGeoCodedRecord
