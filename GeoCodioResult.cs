@@ -287,10 +287,27 @@ namespace GeoCodio
         public string FormattedAddress { get; set; }
     }
 
-    public class ForwardGeoCodeResult
+    public class SingleForwardGeoCodeResult
     {
         public ForwardGeoCodeInput Input { get; set; }
         public ForwardGeoCodeRecord[] Results { get; set; }
+    }
+
+    public class BatchForwardGeoCodeResponse
+    {
+        public ForwardGeoCodeInput Input { get; set; }
+        public ForwardGeoCodeRecord[] Results { get; set; }
+    }
+
+    public class BatchForwardGeoCodeRecord
+    {
+        public string Query { get; set; }
+        public BatchForwardGeoCodeResponse Response { get; set; }
+    }
+
+    public class BatchForwardGeoCodeResult
+    {
+        public BatchForwardGeoCodeRecord[] Results { get; set; }
     }
 
     public class ReverseGeoCodedRecord

@@ -26,6 +26,12 @@ namespace GeoCodio
             this.apiKey = apiKey;
         }
    
+        /// <summary>
+        /// Forward geocode a single address, synchronously.  Address should be a string in a form
+        /// such as "3601 S Broad St, Philadelphia, PA 19148".  The flags can be set to return additional
+        /// info
+        /// </summary>
+        /// <returns>Returns a raw JSON string</returns>
         public string ForwardGeocodeSync (string fullAddress, bool queryCongressionalDistrict
     , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
         {
@@ -53,10 +59,53 @@ namespace GeoCodio
         }
 
         /// <summary>
+        /// Batch forward geocode multiple addresses, synchronously.  Address should be a string in a form
+        /// such as "3601 S Broad St, Philadelphia, PA 19148" and contained within a string[].  
+        /// The flags can be set to return additional info
+        /// </summary>
+        /// <returns>Returns a raw JSON string</returns>
+        public string ForwardGeocodeSync(string[] addressArray, bool queryCongressionalDistrict
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+        {
+            string addressFormatter = "\"{0}\"";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("[");
+            foreach (string address in addressArray)
+            {
+                sb.Append(String.Format(addressFormatter, address));
+                sb.Append(",");
+            }
+            sb.Remove(sb.Length - 1, 1);
+            sb.Append("]");
+
+            StringContent dataToSend = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
+
+            string queryString = forwardGeoCodeBaseUrl + "?api_key=" + apiKey;
+            string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
+                , querySchoolDistricts, queryTimeZone);
+
+            queryString = queryString + queryFields;
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(forwardGeoCodeBaseUrl);
+
+            HttpResponseMessage responseMessage = httpClient.PostAsync(queryString, dataToSend).Result;
+
+            int postStatusCode = (int)responseMessage.StatusCode;
+            if (postStatusCode != 200)
+            {
+                throw new GeocodingException(postStatusCode);
+            }
+
+            return responseMessage.Content.ReadAsStringAsync().Result;
+        }
+
+
+        /// <summary>
         /// Reverse geocode a single point, synchchronously.  Lat and Long inputs are two strings.
         /// Additional boolean flags are used to indicate what Fields you wish to have in the result set
         /// </summary>
-        /// <returns>Returns a jaw JSON string</returns>
+        /// <returns>Returns a raw JSON string</returns>
         public string ReverseGeocodeSync (string lat, string lon, bool queryCongressionalDistrict
     , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
         {
