@@ -16,7 +16,7 @@ namespace GeoCodio
         public string Zip { get; set; }
         public string Country { get; set; }
     }
-    
+
     public class Location
     {
         [JsonProperty("lat")]
@@ -31,6 +31,7 @@ namespace GeoCodio
         private StateLegislature stateLegislature = null;
         private SchoolDistrict schoolDistrict = null;
         private TimeZone timeZone = null;
+        private Census census = null;
 
         [JsonProperty("congressional_district")]
         public CongressionalDistrict CongressionalDistrict
@@ -111,6 +112,43 @@ namespace GeoCodio
             }
         }
 
+        public Census Census
+        {
+            get
+            {
+                if (this.census != null)
+                {
+                    return this.census;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                this.census = value;
+            }
+        }
+
+    }
+
+    public class Census
+    {
+        [JsonProperty("state_fips")]
+        public string StateFIPS { get; set; }
+        [JsonProperty("county_fips")]
+        public string CountyFIPS { get; set; }
+        [JsonProperty("place_fips")]
+        public string PlaceFIPS { get; set; }
+        [JsonProperty("tract_code")]
+        public string TractCode { get; set; }
+        [JsonProperty("block_group")]
+        public string BlockGroup { get; set; }
+        [JsonProperty("block_code")]
+        public string BlockCode { get; set; }
+        [JsonProperty("census_year")]
+        public int CensusYear { get; set; }
     }
 
     public class CongressionalDistrict
@@ -356,5 +394,7 @@ namespace GeoCodio
     public class BatchReverseGeoCoding
     {
         public BatchReverseGeoCodingResult[] Results { get; set; }
+
     }
+
 }

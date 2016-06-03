@@ -14,16 +14,16 @@ namespace GeoCodio
     /// </summary>
     public class GeoCoder
     {
-        private string apiKey;
-        private string forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode";
-        private string forwardGeoCodequery = "?q={0}&api_key={1}";
-        private string reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
-        private string singleReverseGeoCodeQuery = "reverse?q={0},{1}&api_key={2}";
-        private string batchReverseGeocodeQuery = "reverse?api_key={0}";
+        private string _apiKey;
+        private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode";
+        private string _forwardGeoCodequery = "?q={0}&api_key={1}";
+        private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
+        private string _singleReverseGeoCodeQuery = "reverse?q={0},{1}&api_key={2}";
+        private string _batchReverseGeocodeQuery = "reverse?api_key={0}";
 
         public GeoCoder(string apiKey)
         {
-            this.apiKey = apiKey;
+            this._apiKey = apiKey;
         }
    
         /// <summary>
@@ -33,20 +33,20 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public string ForwardGeocodeSync (string fullAddress, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
             string urlEndodedAddress = HttpUtility.UrlEncode(fullAddress);
-            string queryString = String.Format(forwardGeoCodequery, urlEndodedAddress, apiKey);
+            string queryString = String.Format(_forwardGeoCodequery, urlEndodedAddress, _apiKey);
 
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString += queryFields;
 
-            string url = forwardGeoCodeBaseUrl + queryString;
+            string url = _forwardGeoCodeBaseUrl + queryString;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(forwardGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_forwardGeoCodeBaseUrl);
 
             HttpResponseMessage httpResponse = httpClient.GetAsync(queryString).Result;
             int returnStatusCode = (int)httpResponse.StatusCode;
@@ -65,7 +65,7 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public string ForwardGeocodeSync(string[] addressArray, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
             string addressFormatter = "\"{0}\"";
             StringBuilder sb = new StringBuilder();
@@ -80,14 +80,14 @@ namespace GeoCodio
 
             StringContent dataToSend = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
 
-            string queryString = forwardGeoCodeBaseUrl + "?api_key=" + apiKey;
+            string queryString = _forwardGeoCodeBaseUrl + "?api_key=" + _apiKey;
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString = queryString + queryFields;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(forwardGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_forwardGeoCodeBaseUrl);
 
             HttpResponseMessage responseMessage = httpClient.PostAsync(queryString, dataToSend).Result;
 
@@ -107,20 +107,20 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public async Task<string> ForwardGeoCodeAsync (string fullAddress, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
             string urlEndodedAddress = HttpUtility.UrlEncode(fullAddress);
-            string queryString = String.Format(forwardGeoCodequery, urlEndodedAddress, apiKey);
+            string queryString = String.Format(_forwardGeoCodequery, urlEndodedAddress, _apiKey);
 
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString += queryFields;
 
-            string url = forwardGeoCodeBaseUrl + queryString;
+            string url = _forwardGeoCodeBaseUrl + queryString;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(forwardGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_forwardGeoCodeBaseUrl);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync(queryString);
 
@@ -135,7 +135,7 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public async Task<string> ForwardGeoCodeAsync (string[] addressArray, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
             string addressFormatter = "\"{0}\"";
             StringBuilder sb = new StringBuilder();
@@ -150,14 +150,14 @@ namespace GeoCodio
 
             StringContent dataToSend = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
 
-            string queryString = forwardGeoCodeBaseUrl + "?api_key=" + apiKey;
+            string queryString = _forwardGeoCodeBaseUrl + "?api_key=" + _apiKey;
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString = queryString + queryFields;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(forwardGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_forwardGeoCodeBaseUrl);
 
             HttpResponseMessage responseMessage = await httpClient.PostAsync(queryString, dataToSend);
 
@@ -172,19 +172,19 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public string ReverseGeocodeSync (string lat, string lon, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
-            string queryString = String.Format(singleReverseGeoCodeQuery, lat, lon, apiKey);
+            string queryString = String.Format(_singleReverseGeoCodeQuery, lat, lon, _apiKey);
 
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString += queryFields;
 
-            string url = reverseGeoCodeBaseUrl + queryString;
+            string url = _reverseGeoCodeBaseUrl + queryString;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(reverseGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_reverseGeoCodeBaseUrl);
 
             HttpResponseMessage httpResponse = httpClient.GetAsync(queryString).Result;
             int returnStatusCode = (int)httpResponse.StatusCode;
@@ -203,7 +203,7 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public string ReverseGeocodeSync (string[] latLongStringsArray, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
             string latLongFormatter = "\"{0}\"";
 
@@ -219,14 +219,14 @@ namespace GeoCodio
 
             StringContent dataTosend = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
 
-            string queryString = String.Format(batchReverseGeocodeQuery, apiKey);
+            string queryString = String.Format(_batchReverseGeocodeQuery, _apiKey);
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString = queryString + queryFields;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(reverseGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_reverseGeoCodeBaseUrl);
 
             HttpResponseMessage responseMessage = httpClient.PostAsync(queryString, dataTosend).Result;
 
@@ -245,19 +245,19 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a jaw JSON string</returns>
         public async Task<string> ReverseGeoCodeAsync(string lat, string lon, bool queryCongressionalDistrict
-, bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+, bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
-            string queryString = String.Format(singleReverseGeoCodeQuery, lat, lat, apiKey);
+            string queryString = String.Format(_singleReverseGeoCodeQuery, lat, lat, _apiKey);
 
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                    , querySchoolDistricts, queryTimeZone);
+                    , querySchoolDistricts, queryTimeZone, queryCensus);
 
             queryString = queryString + queryFields;
 
-            string url = reverseGeoCodeBaseUrl + queryString;
+            string url = _reverseGeoCodeBaseUrl + queryString;
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(reverseGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_reverseGeoCodeBaseUrl);
 
             HttpResponseMessage httpResponse = await httpClient.GetAsync(url);
 
@@ -273,13 +273,13 @@ namespace GeoCodio
         /// </summary>
         /// <returns>Returns a raw JSON string</returns>
         public async Task<string> ReverseGeoCodeAsync(string[] latLongStringsArray, bool queryCongressionalDistrict
-    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone)
+    , bool queryStateLegislativeDistrict, bool querySchoolDistricts, bool queryTimeZone, bool queryCensus)
         {
-            string queryString = String.Format(batchReverseGeocodeQuery, apiKey);
+            string queryString = String.Format(_batchReverseGeocodeQuery, _apiKey);
             string queryFields = buildFieldQueryString(queryCongressionalDistrict, queryStateLegislativeDistrict
-                , querySchoolDistricts, queryTimeZone);
+                , querySchoolDistricts, queryTimeZone, queryCensus);
             queryString = queryString + queryFields;
-            string url = reverseGeoCodeBaseUrl + queryString;
+            string url = _reverseGeoCodeBaseUrl + queryString;
 
             string latLongFormatter = "\"{0}\"";
 
@@ -296,7 +296,7 @@ namespace GeoCodio
             StringContent stringJsonData = new StringContent(sb.ToString(), Encoding.UTF8, "application/json");
 
             HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(reverseGeoCodeBaseUrl);
+            httpClient.BaseAddress = new Uri(_reverseGeoCodeBaseUrl);
 
             string breaker = "ouch";
 
@@ -307,9 +307,9 @@ namespace GeoCodio
         }
 
         private string buildFieldQueryString(bool queryCongressionalDistrict
-           , bool queryStateLegislativeDistrict, bool querySchoolDistrict, bool queryTimeZone)
+           , bool queryStateLegislativeDistrict, bool querySchoolDistrict, bool queryTimeZone, bool queryCensus)
         {
-            string[] queryPieces = new string[4];
+            string[] queryPieces = new string[5];
             if (queryCongressionalDistrict == true)
             {
                 queryPieces[0] = "cd";
@@ -325,6 +325,10 @@ namespace GeoCodio
             if (queryTimeZone == true)
             {
                 queryPieces[3] = "timezone";
+            }
+            if(queryCensus == true)
+            {
+                queryPieces[4] = "census";
             }
 
             string fieldsQuery = "";
