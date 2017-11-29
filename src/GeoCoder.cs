@@ -5,7 +5,6 @@ using System.Text;
 using System.Web;
 using System.Threading.Tasks;
 using System.Net.Http;
-using System.Web;
 
 namespace GeoCodio
 {
@@ -46,6 +45,9 @@ namespace GeoCodio
             string url = _forwardGeoCodeBaseUrl + queryString;
 
             HttpClient httpClient = new HttpClient();
+
+
+
             httpClient.BaseAddress = new Uri(_forwardGeoCodeBaseUrl);
 
             HttpResponseMessage httpResponse = httpClient.GetAsync(queryString).Result;
