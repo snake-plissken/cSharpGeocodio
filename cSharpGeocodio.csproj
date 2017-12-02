@@ -30,6 +30,7 @@
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoder.cs" />
     <Compile Include="src\GeoCodioResult.cs" />
+    <Compile Include="src\QueryFieldEnums.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />
