@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GeoCodio
+namespace cSharpGeocodio
 {
     public class AddressComponent
     {

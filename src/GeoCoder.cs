@@ -6,7 +6,7 @@ using System.Web;
 using System.Threading.Tasks;
 using System.Net.Http;
 
-namespace GeoCodio
+namespace cSharpGeocodio
 {
     /// <summary>
     /// The GeoCoder class.
@@ -14,6 +14,8 @@ namespace GeoCodio
     public class GeoCoder
     {
         private string _apiKey;
+		private string _apiBaseUrl = "https://api.geocod.io/v1/";
+
         private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode";
         private string _forwardGeoCodequery = "?q={0}&api_key={1}";
         private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
@@ -45,8 +47,6 @@ namespace GeoCodio
             string url = _forwardGeoCodeBaseUrl + queryString;
 
             HttpClient httpClient = new HttpClient();
-
-
 
             httpClient.BaseAddress = new Uri(_forwardGeoCodeBaseUrl);
 
@@ -307,6 +307,7 @@ namespace GeoCodio
             string outputs = await responseMessage.Content.ReadAsStringAsync();
             return outputs;
         }
+
 
         private string buildFieldQueryString(bool queryCongressionalDistrict
            , bool queryStateLegislativeDistrict, bool querySchoolDistrict, bool queryTimeZone, bool queryCensus)

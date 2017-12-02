@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeoCodio
+namespace cSharpGeocodio
 {
     public class GeocodingException : Exception
     {
@@ -15,7 +15,7 @@ namespace GeoCodio
             this._returnStatusCode = returnStatusCode;
         }
 
-        public string Message
+        public string SimpleErrorMessage
         {
             get
             {
