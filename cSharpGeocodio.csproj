@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -29,9 +28,13 @@
   <ItemGroup>
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoder.cs" />
-    <Compile Include="src\GeoCodioResult.cs" />
     <Compile Include="src\QueryFieldEnums.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
+    <Compile Include="src\Json Response Backer Classes\ForwardGeocodingBackerClasses.cs" />
+    <Compile Include="src\Json Response Backer Classes\FieldClasses.cs" />
+    <Compile Include="src\Json Response Backer Classes\AddressComponent.cs" />
+    <Compile Include="src\Json Response Backer Classes\Location.cs" />
+    <Compile Include="src\Json Response Backer Classes\ReverseGeocodingBackerClasses.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />
@@ -43,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Json Response Backer Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
