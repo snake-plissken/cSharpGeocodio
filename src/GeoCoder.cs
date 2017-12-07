@@ -308,6 +308,50 @@ namespace cSharpGeocodio
             return outputs;
         }
 
+		public string buildFieldsQueryString(QueryCongressional queryCongress, QueryStateLegislature queryStateLegis
+											  , QuerySchoolDistrict querySchoolDist, QueryCensusInfo queryCensus,
+											  QueryTimeZone queryTimeZone)
+		{
+			string query = "";
+
+			List<string> fields = new List<string>();
+
+			if (queryCongress == QueryCongressional.Yes)
+			{
+				fields.Add("cd");
+			}
+			if (queryStateLegis == QueryStateLegislature.Yes)
+			{
+				fields.Add("stateleg");
+			}
+			if (querySchoolDist == QuerySchoolDistrict.Yes)
+			{
+				fields.Add("school");
+			}
+			if (queryCensus == QueryCensusInfo.Yes)
+			{
+				fields.Add("census");
+			}
+			if (queryTimeZone == QueryTimeZone.Yes)
+			{
+				fields.Add("timezone");
+			}
+
+			//No fields queried so return empty string?
+			//Or should we just return "fields=" with no values?
+			if (fields.Count == 0)
+			{
+				return query;
+			}
+			else
+			{
+
+				query = String.Join(",", fields);
+				query = "fields=" + query;
+				return query;
+			}
+
+		}
 
         private string buildFieldQueryString(bool queryCongressionalDistrict
            , bool queryStateLegislativeDistrict, bool querySchoolDistrict, bool queryTimeZone, bool queryCensus)
