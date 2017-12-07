@@ -1,10 +1,11 @@
 ﻿using System;
 namespace cSharpGeocodio
 {
-	public class ForwardGeocodingResult
+	public class ForwardGeocoding
 	{
-		public ForwardGeocodingResult()
+		public ForwardGeocoding()
 		{
+			
 		}
 	}
 }
