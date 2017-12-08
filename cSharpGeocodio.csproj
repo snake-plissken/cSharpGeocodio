@@ -35,6 +35,7 @@
     <Compile Include="src\Json Response Backer Classes\AddressComponent.cs" />
     <Compile Include="src\Json Response Backer Classes\Location.cs" />
     <Compile Include="src\Json Response Backer Classes\ReverseGeocodingBackerClasses.cs" />
+    <Compile Include="src\Json Response Backer Classes\GeoCodeInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />

@@ -3,8 +3,7 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	
-	public class ReverseGeoCodedRecord
+	public class GeoCodeInfo
 	{
 		[JsonProperty("address_components")]
 		public AddressComponent AddressComponents { get; set; }
@@ -17,21 +16,4 @@ namespace cSharpGeocodio
 		public string Source { get; set; }
 		public Fields Fields { get; set; }
 	}
-
-	public class ReverseGeoCodeResult
-	{
-		public GeoCodeInfo[] Results { get; set; }
-	}
-
-	public class BatchReverseGeoCodingResult
-	{
-		public string Query { get; set; }
-		public BatchReverseGeoCodeResponse Response { get; set; }
-	}
-
-	public class BatchReverseGeoCodeResponse
-	{
-		public GeoCodeInfo[] Results { get; set; }
-	}
-
 }

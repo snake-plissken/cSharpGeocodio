@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web;
+using System.Text;
 using Newtonsoft.Json;
 
 namespace cSharpGeocodio
@@ -13,8 +14,9 @@ namespace cSharpGeocodio
 		private string _apiKey;
 		private string _apiBaseUrl = "https://api.geocod.io/v1/";
 
-		private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode";
+		private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode/";
 		private string _forwardGeoCodequery = "?api_key={0}&q={1}";
+		private string _batchForwardGeocodeQuery = "?api_key={0}";
 		private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
 		private string _singleReverseGeoCodeQuery = "reverse?q={0},{1}&api_key={2}";
 		private string _batchReverseGeocodeQuery = "reverse?api_key={0}";
@@ -23,6 +25,8 @@ namespace cSharpGeocodio
 		{
 			this._apiKey = apiKey;
 		}
+
+
 
 		//Doesn't make any sense to make this generic...because
 		//method is always returning same thing
@@ -44,6 +48,47 @@ namespace cSharpGeocodio
 			return results;
 		}
 
+		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(List<string> inputAddresses, QueryCongressional queryCongressional
+																, QueryStateLegislature queryStateLegis
+																, QuerySchoolDistrict querySchool
+																, QueryCensusInfo queryCensus
+																, QueryTimeZone queryTimeZone)
+		{
+			string fieldQueryString = BuildFieldsQueryString(queryCongressional, queryStateLegis
+															 , querySchool, queryCensus
+															 , queryTimeZone);
+
+			string jsonDataString = JsonConvert.SerializeObject(inputAddresses);
+
+			string responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
+
+			BatchForwardGeoCodeResult results = JsonConvert.DeserializeObject<BatchForwardGeoCodeResult>(responseData);
+
+			return results;
+		}
+
+		private async Task<string> BatchForwardGeocodeWebRequest(string jsonDataString, string fieldqueryString)
+		{
+			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
+			string query = String.Format(this._batchForwardGeocodeQuery, this._apiKey);
+			query = query + fieldqueryString;
+
+			HttpClient client = new HttpClient();
+			client.BaseAddress = baseAddress;
+
+			StringContent payload = new StringContent(jsonDataString, Encoding.UTF8, "application/json");
+
+			HttpResponseMessage response = await client.PostAsync(query, payload);
+
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				throw new GeocodingException((int)response.StatusCode);
+			}
+
+			return await response.Content.ReadAsStringAsync();
+
+		}
+
 		private async Task<string> MakeForwardGeocodeWebRequest(string inputAddress, string fieldQueryString)
 		{
 			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
@@ -63,16 +108,6 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 
 
-		}
-
-		private string MakeSomething(int a, int b)
-		{
-			return "";
-		}
-
-		private object MakeSomething(string a)
-		{
-			return new object();
 		}
 
 		public string BuildFieldsQueryString(QueryCongressional queryCongress
@@ -116,7 +151,7 @@ namespace cSharpGeocodio
 			{
 
 				query = String.Join(",", fields);
-				query = "fields=" + query;
+				query = "&fields=" + query;
 				return query;
 			}
 

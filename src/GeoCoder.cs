@@ -308,9 +308,11 @@ namespace cSharpGeocodio
             return outputs;
         }
 
-		public string buildFieldsQueryString(QueryCongressional queryCongress, QueryStateLegislature queryStateLegis
-											  , QuerySchoolDistrict querySchoolDist, QueryCensusInfo queryCensus,
-											  QueryTimeZone queryTimeZone)
+		public string BuildFieldsQueryString(QueryCongressional queryCongress
+		                                     , QueryStateLegislature queryStateLegis
+											 , QuerySchoolDistrict querySchoolDist
+		                                     , QueryCensusInfo queryCensus
+		                                     , QueryTimeZone queryTimeZone)
 		{
 			string query = "";
 
