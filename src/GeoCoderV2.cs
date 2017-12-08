@@ -17,15 +17,15 @@ namespace cSharpGeocodio
 		private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode/";
 		private string _forwardGeoCodequery = "?api_key={0}&q={1}";
 		private string _batchForwardGeocodeQuery = "?api_key={0}";
+
 		private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
-		private string _singleReverseGeoCodeQuery = "reverse?q={0},{1}&api_key={2}";
+		private string _singleReverseGeoCodeQuery = "reverse?api_key={0}&q={1}";
 		private string _batchReverseGeocodeQuery = "reverse?api_key={0}";
 
 		public GeoCoderV2(string apiKey)
 		{
 			this._apiKey = apiKey;
 		}
-
 
 
 		//Doesn't make any sense to make this generic...because
@@ -86,7 +86,6 @@ namespace cSharpGeocodio
 			}
 
 			return await response.Content.ReadAsStringAsync();
-
 		}
 
 		private async Task<string> MakeForwardGeocodeWebRequest(string inputAddress, string fieldQueryString)
@@ -106,8 +105,46 @@ namespace cSharpGeocodio
 			}
 
 			return await response.Content.ReadAsStringAsync();
+		}
 
+		public async Task<ReverseGeoCodeResult> ReverseGeocodeAsync(string latLong
+		                                     , QueryCongressional queryCongressional
+											 , QueryStateLegislature queryStateLegis
+											 , QuerySchoolDistrict querySchoolDist
+											 , QueryCensusInfo queryCensus
+											 , QueryTimeZone queryTimeZone)
+		{
+			string fieldQueryString = BuildFieldsQueryString(queryCongressional, queryStateLegis
+															 , querySchoolDist, queryCensus
+															 , queryTimeZone);
 
+			string json = await ReverseGeocodeWebRequest(latLong, fieldQueryString);
+
+			ReverseGeoCodeResult result = JsonConvert.DeserializeObject<ReverseGeoCodeResult>(json);
+
+			return result;
+
+		}
+
+		private async Task<string> ReverseGeocodeWebRequest(string latLong, string fieldQueryString)
+		{
+			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
+
+			string queryString = String.Format(this._singleReverseGeoCodeQuery
+											   , this._apiKey, latLong);
+			queryString = queryString + fieldQueryString;
+
+			HttpClient client = new HttpClient();
+			client.BaseAddress = baseAddress;
+
+			HttpResponseMessage response = await client.GetAsync(queryString);
+
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				throw new GeocodingException((int)response.StatusCode);
+			}
+
+			return await response.Content.ReadAsStringAsync();
 		}
 
 		public string BuildFieldsQueryString(QueryCongressional queryCongress
