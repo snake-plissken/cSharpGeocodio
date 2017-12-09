@@ -147,6 +147,49 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
+		public async Task<BatchReverseGeoCodingResult> BatchReverseGeocodeAsync(List<string> inputAddresses
+											 , QueryCongressional queryCongressional
+											 , QueryStateLegislature queryStateLegis
+											 , QuerySchoolDistrict querySchoolDist
+											 , QueryCensusInfo queryCensus
+											 , QueryTimeZone queryTimeZone)
+		{
+			string fieldsQuery = BuildFieldsQueryString(queryCongressional, queryStateLegis
+															 , querySchoolDist, queryCensus
+															 , queryTimeZone);
+
+
+			string jsonPostData = JsonConvert.SerializeObject(inputAddresses);
+
+			string json = await BatchReverseGeocodeWebRequest(jsonPostData, fieldsQuery);
+
+			BatchReverseGeoCodingResult result = JsonConvert.DeserializeObject<BatchReverseGeoCodingResult>(json);
+
+			return result;
+		}
+
+		private async Task<string> BatchReverseGeocodeWebRequest(string jsonPostData, string fieldQueryString)
+		{
+
+			Uri baseAddress = new Uri(this._apiBaseUrl);
+			string queryString = String.Format(this._batchReverseGeocodeQuery, this._apiKey);
+			queryString = queryString + fieldQueryString;
+
+			HttpClient client = new HttpClient();
+			client.BaseAddress = baseAddress;
+
+			StringContent payload = new StringContent(jsonPostData, Encoding.UTF8, "application/json");
+
+			HttpResponseMessage response = await client.PostAsync(queryString, payload);
+
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				throw new GeocodingException((int)response.StatusCode);
+			}
+
+			return await response.Content.ReadAsStringAsync();
+		}
+
 		public string BuildFieldsQueryString(QueryCongressional queryCongress
 		                                     , QueryStateLegislature queryStateLegis
 											 , QuerySchoolDistrict querySchoolDist
