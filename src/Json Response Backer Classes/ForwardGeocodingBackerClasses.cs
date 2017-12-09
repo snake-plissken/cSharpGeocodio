@@ -29,10 +29,4 @@ namespace cSharpGeocodio
 		public string Query { get; set; }
 		public ForwardGeoCodeResult Response { get; set; }
 	}
-
-	public class BatchForwardGeoCodeResponse
-	{
-		public ForwardGeoCodeInput Input { get; set; }
-		public GeoCodeInfo[] Results { get; set; }
-	}
 }
