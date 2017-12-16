@@ -27,21 +27,21 @@ namespace cSharpGeocodio
 			this._apiKey = apiKey;
 		}
 
-
-		//Doesn't make any sense to make this generic...because
-		//method is always returning same thing
-		public async Task<ForwardGeoCodeResult> ForwardGeocodeAsync(string inputAddress, QueryCongressional queryCongressional
+		public async Task<ForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode
+		                                                        , QueryCongressional queryCongressional
 		                                                        , QueryStateLegislature queryStateLegis
 		                                                        , QuerySchoolDistrict querySchool
 		                                                        , QueryCensusInfo queryCensus
 		                                                        , QueryTimeZone queryTimeZone)
 		{
 
-			string fieldQueryString = BuildFieldsQueryString(queryCongressional, queryStateLegis
-															 , querySchool, queryCensus
+			string fieldQueryString = BuildFieldsQueryString(queryCongressional
+			                                                 , queryStateLegis
+															 , querySchool
+			                                                 , queryCensus
 															 , queryTimeZone);
 
-			string json = await MakeForwardGeocodeWebRequest(inputAddress, fieldQueryString);
+			string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
 
 			ForwardGeoCodeResult results = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(json);
 
@@ -67,18 +67,21 @@ namespace cSharpGeocodio
 			return results;
 		}
 
-		private async Task<string> BatchForwardGeocodeWebRequest(string jsonDataString, string fieldqueryString)
+		private async Task<string> BatchForwardGeocodeWebRequest(string jsonDataString, string fieldQueryString)
 		{
+
+			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchForward
+													   , ""
+													   , fieldQueryString);
+
 			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
-			string query = String.Format(this._batchForwardGeocodeQuery, this._apiKey);
-			query = query + fieldqueryString;
 
 			HttpClient client = new HttpClient();
 			client.BaseAddress = baseAddress;
 
 			StringContent payload = new StringContent(jsonDataString, Encoding.UTF8, "application/json");
 
-			HttpResponseMessage response = await client.PostAsync(query, payload);
+			HttpResponseMessage response = await client.PostAsync(queryString, payload);
 
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
@@ -88,17 +91,19 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
-		private async Task<string> MakeForwardGeocodeWebRequest(string inputAddress, string fieldQueryString)
+		private async Task<string> MakeForwardGeocodeWebRequest(string addressToGeocode, string fieldQueryString)
 		{
+			
 			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
-
-			string query = HttpUtility.UrlEncode(inputAddress);
-			query = query + fieldQueryString;
-			query = String.Format(this._forwardGeoCodequery, this._apiKey, query);
 
 			HttpClient httpClient = new HttpClient();
 			httpClient.BaseAddress = baseAddress;
-			HttpResponseMessage response = await httpClient.GetAsync(query);
+
+			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleForward
+												 , addressToGeocode
+												 , fieldQueryString);
+
+			HttpResponseMessage response = await httpClient.GetAsync(queryString);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				throw new GeocodingException((int)response.StatusCode);
@@ -130,9 +135,9 @@ namespace cSharpGeocodio
 		{
 			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
 
-			string queryString = String.Format(this._singleReverseGeoCodeQuery
-											   , this._apiKey, latLong);
-			queryString = queryString + fieldQueryString;
+			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleReverse
+													   , latLong
+													   , fieldQueryString);
 
 			HttpClient client = new HttpClient();
 			client.BaseAddress = baseAddress;
@@ -172,8 +177,12 @@ namespace cSharpGeocodio
 		{
 
 			Uri baseAddress = new Uri(this._apiBaseUrl);
-			string queryString = String.Format(this._batchReverseGeocodeQuery, this._apiKey);
-			queryString = queryString + fieldQueryString;
+
+			//Pass empty string as second parameter because locations to reverse geocode
+			//is passed as argument to HttpClient
+			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchRevsere
+													   , ""
+													   , fieldQueryString);
 
 			HttpClient client = new HttpClient();
 			client.BaseAddress = baseAddress;
@@ -188,6 +197,41 @@ namespace cSharpGeocodio
 			}
 
 			return await response.Content.ReadAsStringAsync();
+		}
+
+		private string PrepareWebQueryString(GeocodingOperationType geocodingOperation
+		                                    , string payload
+		                                    , string fieldQueryString)
+		{
+			if (geocodingOperation == GeocodingOperationType.SingleForward)
+			{
+				//Single forward
+				string query = HttpUtility.UrlEncode(payload);
+				query = query + fieldQueryString;
+				query = String.Format(this._forwardGeoCodequery, this._apiKey, query);
+				return query;
+			}
+			else if (geocodingOperation == GeocodingOperationType.BatchForward)
+			{
+				//Batch forward
+				string query = String.Format(this._batchForwardGeocodeQuery, this._apiKey);
+				query = query + fieldQueryString;
+				return query;
+			}
+			else if (geocodingOperation == GeocodingOperationType.SingleReverse)
+			{
+				//Single reverse
+				string queryString = String.Format(this._singleReverseGeoCodeQuery, this._apiKey, payload);
+				queryString = queryString + fieldQueryString;
+				return queryString;
+			}
+			else
+			{
+				//Batch revsere
+				string query = String.Format(this._batchReverseGeocodeQuery, this._apiKey);
+				query = query + fieldQueryString;
+				return query;
+			}
 		}
 
 		public string BuildFieldsQueryString(QueryCongressional queryCongress
