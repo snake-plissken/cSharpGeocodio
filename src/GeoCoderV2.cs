@@ -27,7 +27,7 @@ namespace cSharpGeocodio
 			this._apiKey = apiKey;
 		}
 
-		public async Task<ForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode
+		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode
 		                                                        , QueryCongressional queryCongressional
 		                                                        , QueryStateLegislature queryStateLegis
 		                                                        , QuerySchoolDistrict querySchool
@@ -43,9 +43,16 @@ namespace cSharpGeocodio
 
 			string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
 
-			ForwardGeoCodeResult results = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(json);
+			ForwardGeoCodeResult result = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(json);
 
-			return results;
+			//Wrap result from GeoCodio in BatchForwardGeocodeResult
+			BatchForwardGeoCodeRecord record = new BatchForwardGeoCodeRecord
+			{
+				Query = addressToGeocode,
+				Response = result
+			};
+
+			return new BatchForwardGeoCodeResult { Results = new BatchForwardGeoCodeRecord[] { record } };
 		}
 
 		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(List<string> inputAddresses, QueryCongressional queryCongressional
