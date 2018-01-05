@@ -1,24 +1,60 @@
 ## A wrapper to access Geocodio, a geocoding service.  
 
-# See: https://geocod.io/
+# Website for the service: https://geocod.io/
 
-Usage:
+Usage and examples:
 
 ```c#
-//Single forward geocode:
+GeoCoderV2 geoCoder = new GeoCoderV2('Your Grocodio API key.  You get 2500 free lookups per day!');
+
+//
+//Forward geocode a single address:
+//
 string singleAddress = "2100 East Market Street, Philadelphia, PA 19103";
-GeoCoder geoCoder = new geoCoder('Your Grocodio API key.  You get 2500 free lookups per day!');
-SingleForwardGeoCodeResult geoCodedAddress = geoCoder.ForwardGeoCodeSync(singleAddress);
 
-//If Results array is length 0, no results were found...
-Location latLong = geoCodedAddress.Results[0].Location;
+Task<BatchForwardGeoCodeResult> singleAddress = await geoCoder.ForwardGeocodeAsync("2000 Market Street, Philadelphia, PA 19103"
+, QueryCongressional.No
+, QueryStateLegislature.No
+, QuerySchoolDistrict.No
+, QueryCensusInfo.No
+, QueryTimeZone.No);
+                         
+BatchFowardGeocodeResult singleResult = singleAddress.Result;
 
-float addressLatitude = latLong.Latitude;
-float addressLongitude = latLong.Longitude;
+//Geocodio will often return multiple items in the Results property of the Response object, ordered by the most accurate
+Location singleLatLong = single_result.Response.Results[0].Location;
+
+//
+//Batch forward geocoding
+//
+//Make a list of addresses...
+Task<BatchForwardGeoCodeResult> batchGeocode = await geoCoder.ForwardGeocodeAsync(list_of_addresses
+, QueryCongressional.No
+, QueryStateLegislature.No
+, QuerySchoolDistrict.No
+, QueryCensusInfo.No
+, QueryTimeZone.No);
+                         
+BatchForwardGeocodeResult batchResults = batchGeocode.Result;
+//Iterate through collection of results
+//When batch geocoding, Geocodio returns the results in the same order as found in the list_of_addresses you pass to the ForwardGeocodeAsync method
+for(int i = 0; i++; i < batchResults.Results)
+{
+    BatchForwardGeoCodeRecord geoCodedItem = batchResults.Results[i];
+    string addressWhichWasGeocoded = geoCodedItem.Query;
+    Location latLong = geoCodedItem.Response.Results[0].Location;
+    //Add to database, add to queue, some other operation;
+}
+
 ```
 
-To-Do:
-- [x] Forward Geocoding Methods - Done - 3-25-16
-- [ ] Better Error Handling For Asynchronous Methods
-- [ ] Unit Testies
-- [ ] Cleanup of JSON backer classes, they are kind of messy
+Design Notes/Stuff:
+
+1. Remaining To-Do:
+  * Add method descriptions
+  * While the JSON backer classes have been cleaned up, the backer classes for the optional fields (e.g Census Tract Info) still need to be cleaned up
+2. Design Info/Notes/Thoughts:
+  * The Christmas 2017 commits made some substantial changes.  My apologies if they broke anything but I was pretty sure no one was using this.
+  * The goals were with these changes were to condense the geocoding functions and to return the same types from the forward and reverse mthods, respectively, i.e. the forward and batch forward methods each return a `Task<BatchForwardGeoCodeResult>` object
+  * I considered writing the geocoding methods to take interfaces but it seemed fine to just use strings or lists of strings instead
+  * I also thought of using named/optional parameters in these methods but I felt it disguised, too much, the intent when calling these methods.  It's easier to see what your call is doing when you see the field enumerations declared in the method calls
