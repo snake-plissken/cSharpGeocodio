@@ -13,14 +13,8 @@ namespace cSharpGeocodio
 	{
 		private string _apiKey;
 		private string _apiBaseUrl = "https://api.geocod.io/v1/";
-
 		private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1/geocode/";
-		private string _forwardGeoCodequery = "?api_key={0}&q={1}";
-		private string _batchForwardGeocodeQuery = "?api_key={0}";
-
-		private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/";
-		private string _singleReverseGeoCodeQuery = "reverse?api_key={0}&q={1}";
-		private string _batchReverseGeocodeQuery = "reverse?api_key={0}";
+		private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1/reverse/";
 
 		public GeoCoderV2(string apiKey)
 		{
@@ -119,7 +113,7 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
-		public async Task<ReverseGeoCodeResult> ReverseGeocodeAsync(string latLong
+		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(string latLong
 		                                     , QueryCongressional queryCongressional
 											 , QueryStateLegislature queryStateLegis
 											 , QuerySchoolDistrict querySchoolDist
@@ -134,8 +128,39 @@ namespace cSharpGeocodio
 
 			ReverseGeoCodeResult result = JsonConvert.DeserializeObject<ReverseGeoCodeResult>(json);
 
-			return result;
+			BatchReverseGeoCodeResponse response = new BatchReverseGeoCodeResponse
+			{
+				Query = latLong,
+				Response = result
+			};
 
+			BatchReverseGeoCodingResult results = new BatchReverseGeoCodingResult
+			{
+				Results = new BatchReverseGeoCodeResponse[] { response }
+			};
+
+			return results;
+		}
+
+		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(List<string> inputAddresses
+											 , QueryCongressional queryCongressional
+											 , QueryStateLegislature queryStateLegis
+											 , QuerySchoolDistrict querySchoolDist
+											 , QueryCensusInfo queryCensus
+											 , QueryTimeZone queryTimeZone)
+		{
+			string fieldsQuery = BuildFieldsQueryString(queryCongressional, queryStateLegis
+															 , querySchoolDist, queryCensus
+															 , queryTimeZone);
+
+
+			string jsonPostData = JsonConvert.SerializeObject(inputAddresses);
+
+			string json = await BatchReverseGeocodeWebRequest(jsonPostData, fieldsQuery);
+
+			BatchReverseGeoCodingResult result = JsonConvert.DeserializeObject<BatchReverseGeoCodingResult>(json);
+
+			return result;
 		}
 
 		private async Task<string> ReverseGeocodeWebRequest(string latLong, string fieldQueryString)
@@ -159,34 +184,12 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
-		public async Task<BatchReverseGeoCodingResult> BatchReverseGeocodeAsync(List<string> inputAddresses
-											 , QueryCongressional queryCongressional
-											 , QueryStateLegislature queryStateLegis
-											 , QuerySchoolDistrict querySchoolDist
-											 , QueryCensusInfo queryCensus
-											 , QueryTimeZone queryTimeZone)
-		{
-			string fieldsQuery = BuildFieldsQueryString(queryCongressional, queryStateLegis
-															 , querySchoolDist, queryCensus
-															 , queryTimeZone);
-
-
-			string jsonPostData = JsonConvert.SerializeObject(inputAddresses);
-
-			string json = await BatchReverseGeocodeWebRequest(jsonPostData, fieldsQuery);
-
-			BatchReverseGeoCodingResult result = JsonConvert.DeserializeObject<BatchReverseGeoCodingResult>(json);
-
-			return result;
-		}
-
 		private async Task<string> BatchReverseGeocodeWebRequest(string jsonPostData, string fieldQueryString)
 		{
+			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
 
-			Uri baseAddress = new Uri(this._apiBaseUrl);
-
-			//Pass empty string as second parameter because locations to reverse geocode
-			//is passed as argument to HttpClient
+			//Pass empty string as second parameter; locations to reverse geocode
+			//are passed as payload argument to HttpClient
 			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchRevsere
 													   , ""
 													   , fieldQueryString);
@@ -213,29 +216,34 @@ namespace cSharpGeocodio
 			if (geocodingOperation == GeocodingOperationType.SingleForward)
 			{
 				//Single forward
+				string forwardGeoCodequery = "?api_key={0}&q={1}";
+
 				string query = HttpUtility.UrlEncode(payload);
 				query = query + fieldQueryString;
-				query = String.Format(this._forwardGeoCodequery, this._apiKey, query);
+				query = String.Format(forwardGeoCodequery, this._apiKey, query);
 				return query;
 			}
 			else if (geocodingOperation == GeocodingOperationType.BatchForward)
 			{
 				//Batch forward
-				string query = String.Format(this._batchForwardGeocodeQuery, this._apiKey);
+				string batchForwardGeocodeQuery = "?api_key={0}";
+				string query = String.Format(batchForwardGeocodeQuery, this._apiKey);
 				query = query + fieldQueryString;
 				return query;
 			}
 			else if (geocodingOperation == GeocodingOperationType.SingleReverse)
 			{
 				//Single reverse
-				string queryString = String.Format(this._singleReverseGeoCodeQuery, this._apiKey, payload);
+				string singleReverseGeoCodeQuery = "?api_key={0}&q={1}";
+				string queryString = String.Format(singleReverseGeoCodeQuery, this._apiKey, payload);
 				queryString = queryString + fieldQueryString;
 				return queryString;
 			}
 			else
 			{
 				//Batch revsere
-				string query = String.Format(this._batchReverseGeocodeQuery, this._apiKey);
+				string batchReverseGeocodeQuery = "?api_key={0}";
+				string query = String.Format(batchReverseGeocodeQuery, this._apiKey);
 				query = query + fieldQueryString;
 				return query;
 			}
