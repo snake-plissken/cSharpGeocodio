@@ -2,7 +2,9 @@
 
 ## Website for the service: https://geocod.io/
 
-Usage and examples:
+Usage and examples are below.
+
+Forward Gecoding:
 
 ```c#
 GeoCoderV2 geoCoder = new GeoCoderV2('Your Grocodio API key.  You get 2500 free lookups per day!');
@@ -46,6 +48,53 @@ for(int i = 0; i++; i < batchResults.Results)
     string addressWhichWasGeocoded = geoCodedItem.Query;
     Location latLong = geoCodedItem.Response.Results[0].Location;
     //Add to database, add to queue, some other operation;
+}
+```
+
+Reverse Geocoding:
+
+```c#
+//
+//Reverse geocode a single point
+//
+
+string singlePoint = "39.9373426,-75.1865927";
+
+Task<BatchReverseGeoCodingResult> reversePoint = await gc.ReverseGeocodeAsync(singlePoint
+, QueryCongressional.No
+, QueryStateLegislature.No
+, QuerySchoolDistrict.Yes
+, QueryCensusInfo.No
+, QueryTimeZone.No);
+
+BatchReverseGeocodingResult singlePointResult = reversePoint.Result;
+ReverseGeocodeResult reverseGeocodeResult = singlePointResult.Results[0].Response.Results;
+string addressOfPoint = reverseGeocodeResult.Results[0].FormattedAddress;
+
+//
+//Batch reverse geocoding
+//
+
+List<string> batchReverseInputs = new List<string>();
+//Add points to list...
+Task<BatchReverseGeoCodingResult> batchReverse = await gc.ReverseGeocodeAsync(batchReverseInputs
+, QueryCongressional.No
+, QueryStateLegislature.No
+, QuerySchoolDistrict.Yes
+, QueryCensusInfo.No
+, QueryTimeZone.No);
+
+BatchReverseGeoCodingResult batchReverseResults = batchReverse.Result;
+//Iterate through the results
+//As with forward geocoding, results are returned in the same order as found
+//in the list of LatLong points we passed to the ReverseGeocodeAsync
+for (int i = 0; i < batchReverseResults.Length; i++)
+{
+    BatchReverseGeoCodeResponse batchResponse = batchReverseResults.Results[i];
+    ReverseGeoCodeResult resultsFromOneQuery = batchResponse.Response;
+    //Here, the actual results of the operation, ordered in terms
+    //of accuray
+    GeoCodeInfo[] geoCodedInfo = resultsFromOneQuery.Results;
 }
 
 ```
