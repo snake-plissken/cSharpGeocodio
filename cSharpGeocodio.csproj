@@ -37,6 +37,12 @@
     <Compile Include="src\Json Response Backer Classes\ReverseGeocodingBackerClasses.cs" />
     <Compile Include="src\Json Response Backer Classes\GeoCodeInfo.cs" />
     <Compile Include="src\GeocodingOperationType.cs" />
+    <Compile Include="src\Json Response Backer Classes\FederalLegislator.cs" />
+    <Compile Include="src\Json Response Backer Classes\Bio.cs" />
+    <Compile Include="src\Json Response Backer Classes\Contact.cs" />
+    <Compile Include="src\Json Response Backer Classes\References.cs" />
+    <Compile Include="src\Json Response Backer Classes\SocialNetworkInfo.cs" />
+    <Compile Include="src\Json Response Backer Classes\CongressionalDistrictV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />

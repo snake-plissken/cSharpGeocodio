@@ -11,6 +11,9 @@ namespace cSharpGeocodio
 		private TimeZone timeZone = null;
 		private Census census = null;
 
+		[JsonProperty("congressional_districts")]
+		public CongressionalDistrictV2[] CongressionalDistricts { get; set; }
+
 		[JsonProperty("congressional_district")]
 		public CongressionalDistrict CongressionalDistrict
 		{
