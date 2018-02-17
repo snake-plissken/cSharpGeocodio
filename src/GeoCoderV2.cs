@@ -21,17 +21,28 @@ namespace cSharpGeocodio
 			this._apiKey = apiKey;
 		}
 
+		/// <summary>
+		/// Method which handles single geocoding requests.
+		/// </summary>
+		/// <returns>A single address to Geocodein the form 
+		/// "123 Bad Kitty St, Bad Kity City, State ZipCode</returns>
+		/// <param name="addressToGeocode">Address to geocode.</param>
+		/// <param name="queryCongressional">Query the Congressional info.</param>
+		/// <param name="queryStateLegis">Query state legislators info.</param>
+		/// <param name="querySchoolDist">Query school diststring info.</param>
+		/// <param name="queryCensus">Query census tract info.</param>
+		/// <param name="queryTimeZone">Query time zone info.</param>
 		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode
 		                                                        , QueryCongressional queryCongressional
 		                                                        , QueryStateLegislature queryStateLegis
-		                                                        , QuerySchoolDistrict querySchool
+		                                                        , QuerySchoolDistrict querySchoolDist
 		                                                        , QueryCensusInfo queryCensus
 		                                                        , QueryTimeZone queryTimeZone)
 		{
 
 			string fieldQueryString = BuildFieldsQueryString(queryCongressional
 			                                                 , queryStateLegis
-															 , querySchool
+															 , querySchoolDist
 			                                                 , queryCensus
 															 , queryTimeZone);
 
@@ -49,14 +60,25 @@ namespace cSharpGeocodio
 			return new BatchForwardGeoCodeResult { Results = new BatchForwardGeoCodeRecord[] { record } };
 		}
 
+		/// <summary>
+		/// Method which handles batch geocoding requests.
+		/// </summary>
+		/// <returns>A batchForwardGeoCodeResult containing the results of the geocoding operation.</returns>
+		/// <param name="inputAddresses">A list of input addresses in the form 
+		/// "123 Bad Kitty St, Bad Kity City, State ZipCode</param>
+		/// <param name="queryCongressional">Query the Congressional info.</param>
+		/// <param name="queryStateLegis">Query state legislators info.</param>
+		/// <param name="querySchoolDist">Query school diststring info.</param>
+		/// <param name="queryCensus">Query census tract info.</param>
+		/// <param name="queryTimeZone">Query time zone info.</param>
 		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(List<string> inputAddresses, QueryCongressional queryCongressional
 																, QueryStateLegislature queryStateLegis
-																, QuerySchoolDistrict querySchool
+																, QuerySchoolDistrict querySchoolDist
 																, QueryCensusInfo queryCensus
 																, QueryTimeZone queryTimeZone)
 		{
 			string fieldQueryString = BuildFieldsQueryString(queryCongressional, queryStateLegis
-															 , querySchool, queryCensus
+															 , querySchoolDist, queryCensus
 															 , queryTimeZone);
 
 			string jsonDataString = JsonConvert.SerializeObject(inputAddresses);
@@ -68,6 +90,12 @@ namespace cSharpGeocodio
 			return results;
 		}
 
+		/// <summary>
+		/// Sends a batch forward geocoding requests.
+		/// </summary>
+		/// <returns>The results of the batch geocoding operation as a string.</returns>
+		/// <param name="jsonDataString">Stringified JSON of address list.</param>
+		/// <param name="fieldQueryString">Fields we wish to query for this address.</param>
 		private async Task<string> BatchForwardGeocodeWebRequest(string jsonDataString, string fieldQueryString)
 		{
 
@@ -92,6 +120,12 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
+		/// <summary>
+		/// Sends a single reverse geocoding requests.
+		/// </summary>
+		/// <returns>The geocode web request results as a string.</returns>
+		/// <param name="addressToGeocode">Address to geocode in the form "2000 Market St, City, State Zip".</param>
+		/// <param name="fieldQueryString">Fields we wish to query for this address.</param>
 		private async Task<string> MakeForwardGeocodeWebRequest(string addressToGeocode, string fieldQueryString)
 		{
 			
@@ -113,6 +147,17 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
+		/// <summary>
+		/// Method which handles single reverse geocoding requests.
+		/// </summary>
+		/// <returns>A BatchReverseGeoCodingResult object holding the results 
+		/// of the reverse geocoding operation</returns>
+		/// <param name="latLong">A string in the form of "latitude,longitude" to reverse geocode</param>
+		/// <param name="queryCongressional">Query the Congressional info.</param>
+		/// <param name="queryStateLegis">Query state legislators info.</param>
+		/// <param name="querySchoolDist">Query school diststring info.</param>
+		/// <param name="queryCensus">Query census tract info.</param>
+		/// <param name="queryTimeZone">Query time zone info.</param>
 		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(string latLong
 		                                     , QueryCongressional queryCongressional
 											 , QueryStateLegislature queryStateLegis
@@ -142,6 +187,18 @@ namespace cSharpGeocodio
 			return results;
 		}
 
+		/// <summary>
+		/// Method which handles batch reverse geocoding requests.
+		/// </summary>
+		/// <returns>A BatchReverseGeoCodingResult object holding the results 
+		/// of the reverse geocoding operation
+		/// </returns>
+		/// <param name="inputAddresses">List of input addresses in the form "latitiude,longitude".</param>
+		/// <param name="queryCongressional">Query the Congressional info.</param>
+		/// <param name="queryStateLegis">Query state legislators info.</param>
+		/// <param name="querySchoolDist">Query school diststring info.</param>
+		/// <param name="queryCensus">Query census tract info.</param>
+		/// <param name="queryTimeZone">Query time zone info.</param>
 		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(List<string> inputAddresses
 											 , QueryCongressional queryCongressional
 											 , QueryStateLegislature queryStateLegis
@@ -163,6 +220,12 @@ namespace cSharpGeocodio
 			return result;
 		}
 
+		/// <summary>
+		/// Sends a single point for reverse geocoding.
+		/// </summary>
+		/// <returns>The reverse geocode web request results as a string.</returns>
+		/// <param name="latLong">Lat and long of point to reverse geocode</param>
+		/// <param name="fieldQueryString">Fields we wish to query for these points.</param>
 		private async Task<string> ReverseGeocodeWebRequest(string latLong, string fieldQueryString)
 		{
 			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
@@ -184,6 +247,12 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
+		/// <summary>
+		/// Sends a batch reverse geocoding request.
+		/// </summary>
+		/// <returns>The reverse geocode web request results as a string.</returns>
+		/// <param name="jsonPostData">Stringified JSON data we wish to reverse geocode.</param>
+		/// <param name="fieldQueryString">Fields we wish to query for these points.</param>
 		private async Task<string> BatchReverseGeocodeWebRequest(string jsonPostData, string fieldQueryString)
 		{
 			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
@@ -209,7 +278,15 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
-		private string PrepareWebQueryString(GeocodingOperationType geocodingOperation
+
+		/// <summary>
+		/// Prepares the mandatory parts of the URL for sending a request to Geocodio
+		/// </summary>
+		/// <returns>A string which is the URL we will access</returns>
+		/// <param name="geocodingOperation">The type of Geocoding operation.</param>
+		/// <param name="payload">Payload; only used when sending a single reverse geocode operation</param>
+		/// <param name="fieldQueryString">The fields we wish to query.</param>
+		public string PrepareWebQueryString(GeocodingOperationType geocodingOperation
 		                                    , string payload
 		                                    , string fieldQueryString)
 		{
@@ -249,6 +326,16 @@ namespace cSharpGeocodio
 			}
 		}
 
+		/// <summary>
+		/// Builds the field query string which will be appended
+		/// to the URL.
+		/// </summary>
+		/// <returns>A string containing the fields to be queried.</returns>
+		/// <param name="queryCongress">Query Congreess rep and sens.</param>
+		/// <param name="queryStateLegis">Query state legislators.</param>
+		/// <param name="querySchoolDist">Query school district.</param>
+		/// <param name="queryCensus">Query census tract.</param>
+		/// <param name="queryTimeZone">Query time zone.</param>
 		public string BuildFieldsQueryString(QueryCongressional queryCongress
 		                                     , QueryStateLegislature queryStateLegis
 											 , QuerySchoolDistrict querySchoolDist
