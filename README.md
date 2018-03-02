@@ -118,7 +118,7 @@ for (int i = 0; i < batchReverseResults.Length; i++)
 Design Notes/Stuff:
 
 1. Remaining To-Do:
-  * Add ease of access properties and fields to geocoding responses.  BatchForwardGeoCodeResult and BatchReverseGeoCodingResult are clunky little guys at the moment.
+  * Add some stuff to ease access properties the actual geocoding responses.  BatchForwardGeoCodeResult and BatchReverseGeoCodingResult are clunky little guys at the moment.  This is the next priority.
   * While the JSON backer classes have been cleaned up, the backer classes for the optional fields (e.g Census Tract Info) still need to be cleaned up
 2. Design Info/Notes/Thoughts:
   * The Christmas 2017 commits made some substantial changes.  My apologies if they broke anything but I was pretty sure no one was using this.
