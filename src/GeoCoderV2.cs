@@ -82,14 +82,13 @@ namespace cSharpGeocodio
 															 , queryTimeZone);
 
 			string jsonDataString = JsonConvert.SerializeObject(inputAddresses);
+			string responseData;
 
-			string responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
-
+			responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
 			BatchForwardGeoCodeResult results = JsonConvert.DeserializeObject<BatchForwardGeoCodeResult>(responseData);
-
 			return results;
-		}
 
+		}
 		/// <summary>
 		/// Sends a batch forward geocoding requests.
 		/// </summary>
