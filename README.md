@@ -4,6 +4,22 @@
 
 Usage and examples are below.
 
+Note on exceptions and errors from Geocodio:
+
+Wrap all calls in a try/catch for an AggregateException.  The inner exception is a GeocodingException with a property GeocodioErrorMessage which contains info on the error returned by Geocodio:
+
+```C#
+try {
+    //Sample using ForwardGeocodeAsync, same for everseGeocodeAsync
+    geocoder.ForwardGeocodeAsync(...)
+    }
+catch (AggregateException ex) {
+    GeocodingException gex = (GeocodingException)ex.InnerException;
+    gex.GeocodioErrorMessage;
+    }
+
+```
+
 Forward Gecoding:
 
 ```c#
