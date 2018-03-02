@@ -11,6 +11,7 @@ namespace cSharpGeocodio
     /// <summary>
     /// The GeoCoder class.
     /// </summary>
+	[Obsolete("No longer works.  Left in for temporary posterity.",true)]
     public class GeoCoder
     {
         private string _apiKey;
