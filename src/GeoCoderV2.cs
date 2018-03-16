@@ -12,9 +12,9 @@ namespace cSharpGeocodio
 	public class GeoCoderV2
 	{
 		private string _apiKey;
-		private string _apiBaseUrl = "https://api.geocod.io/v1/";
-		private string _forwardGeoCodeBaseUrl = "https://api.geocod.io/v1.2/geocode/";
-		private string _reverseGeoCodeBaseUrl = "https://api.geocod.io/v1.2/reverse/";
+		private static string _apiBaseUrl = "https://api.geocod.io/v1.2/";
+		private string _forwardGeoCodeBaseUrl = _apiBaseUrl + "geocode/";
+		private string _reverseGeoCodeBaseUrl = _apiBaseUrl + "reverse/";
 
 		public GeoCoderV2(string apiKey)
 		{
@@ -125,7 +125,7 @@ namespace cSharpGeocodio
 		/// <returns>The geocode web request results as a string.</returns>
 		/// <param name="addressToGeocode">Address to geocode in the form "2000 Market St, City, State Zip".</param>
 		/// <param name="fieldQueryString">Fields we wish to query for this address.</param>
-		private async Task<string> MakeForwardGeocodeWebRequest(string addressToGeocode, string fieldQueryString)
+		private async Task<GeoCodioServerResponse> MakeForwardGeocodeWebRequest(string addressToGeocode, string fieldQueryString)
 		{
 			
 			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
@@ -137,13 +137,27 @@ namespace cSharpGeocodio
 												 , addressToGeocode
 												 , fieldQueryString);
 
-			HttpResponseMessage response = await httpClient.GetAsync(queryString);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			HttpResponseMessage response;
+			try 
 			{
-				throw new GeocodingException((int)response.StatusCode);
+				response = await httpClient.GetAsync(queryString));
+
+			}
+			catch (Exception e)
+			{
+				
 			}
 
-			return await response.Content.ReadAsStringAsync();
+			HttpResponseMessage response = await responseTask;
+
+			//if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			//{
+			//	throw new GeocodingException((int)response.StatusCode);
+			//}
+
+			//return await response.Content.ReadAsStringAsync();
+
+			return new GeoCodioServerResponse(
 		}
 
 		/// <summary>

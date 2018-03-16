@@ -30,11 +30,9 @@
     <Compile Include="src\GeoCoder.cs" />
     <Compile Include="src\QueryFieldEnums.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
-    <Compile Include="src\Json Response Backer Classes\ForwardGeocodingBackerClasses.cs" />
     <Compile Include="src\Json Response Backer Classes\FieldClasses.cs" />
     <Compile Include="src\Json Response Backer Classes\AddressComponent.cs" />
     <Compile Include="src\Json Response Backer Classes\Location.cs" />
-    <Compile Include="src\Json Response Backer Classes\ReverseGeocodingBackerClasses.cs" />
     <Compile Include="src\Json Response Backer Classes\GeoCodeInfo.cs" />
     <Compile Include="src\GeocodingOperationType.cs" />
     <Compile Include="src\Json Response Backer Classes\FederalLegislator.cs" />
@@ -43,6 +41,14 @@
     <Compile Include="src\Json Response Backer Classes\References.cs" />
     <Compile Include="src\Json Response Backer Classes\SocialNetworkInfo.cs" />
     <Compile Include="src\Json Response Backer Classes\CongressionalDistrictV2.cs" />
+    <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodeResponse.cs" />
+    <Compile Include="src\GeoCodioServerResponse.cs" />
+    <Compile Include="src\Forward Geocoding\ForwardGeoCodeInput.cs" />
+    <Compile Include="src\Forward Geocoding\ForwardGeoCodeResult.cs" />
+    <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeResult.cs" />
+    <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeRecord.cs" />
+    <Compile Include="src\Reverse Geocoding\ReverseGeoCodeResult.cs" />
+    <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodingResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />
@@ -57,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\Json Response Backer Classes\" />
+    <Folder Include="src\Forward Geocoding\" />
+    <Folder Include="src\Reverse Geocoding\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
