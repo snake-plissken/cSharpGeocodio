@@ -9,7 +9,7 @@ namespace cSharpGeocodio
 		private int _serverResponseCode;
 		private string _rawJsonResponseString;
 
-		public GeoCodioServerResponse(TaskStatus taskStatus, int serverResponse, string rawJson)
+		private GeoCodioServerResponse(TaskStatus taskStatus, int serverResponse, string rawJson)
 		{
 			this._taskStatus = taskStatus;
 			this._serverResponseCode = serverResponse;
@@ -29,6 +29,16 @@ namespace cSharpGeocodio
 		public string RawJsonResponse
 		{
 			get { return this._rawJsonResponseString; }
+		}
+
+		public static GeoCodioServerResponse MakeServerResponse(
+			TaskStatus taskStatus, int serverResponse, string rawJson)
+		{
+			//Aren't the task status and server response mutally exlusive?
+			//I.e. if the task faults, we don't get a server response
+			//If the task completes, we do?
+			return new GeoCodioServerResponse(taskStatus, serverResponse, rawJson);
+
 		}
 
 	}

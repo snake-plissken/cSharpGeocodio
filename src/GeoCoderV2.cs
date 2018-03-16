@@ -46,9 +46,12 @@ namespace cSharpGeocodio
 			                                                 , queryCensus
 															 , queryTimeZone);
 
-			string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
+			//string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
 
-			ForwardGeoCodeResult result = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(json);
+			GeoCodioServerResponse geoCodioResponse = await MakeForwardGeocodeWebRequest(
+				addressToGeocode, fieldQueryString);
+
+			ForwardGeoCodeResult result = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(geoCodioResponse.RawJsonResponse);
 
 			//Wrap result from GeoCodio in BatchForwardGeocodeResult
 			BatchForwardGeoCodeRecord record = new BatchForwardGeoCodeRecord
@@ -127,7 +130,7 @@ namespace cSharpGeocodio
 		/// <param name="fieldQueryString">Fields we wish to query for this address.</param>
 		private async Task<GeoCodioServerResponse> MakeForwardGeocodeWebRequest(string addressToGeocode, string fieldQueryString)
 		{
-			
+
 			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
 
 			HttpClient httpClient = new HttpClient();
@@ -137,18 +140,11 @@ namespace cSharpGeocodio
 												 , addressToGeocode
 												 , fieldQueryString);
 
-			HttpResponseMessage response;
-			try 
-			{
-				response = await httpClient.GetAsync(queryString));
+			Task<HttpResponseMessage> responseTask;
 
-			}
-			catch (Exception e)
-			{
-				
-			}
+			responseTask = httpClient.GetAsync(queryString);
 
-			HttpResponseMessage response = await responseTask;
+			string rawJson = await responseTask.Result.Content.ReadAsStringAsync();
 
 			//if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			//{
@@ -157,7 +153,8 @@ namespace cSharpGeocodio
 
 			//return await response.Content.ReadAsStringAsync();
 
-			return new GeoCodioServerResponse(
+			return GeoCodioServerResponse.MakeServerResponse(
+				responseTask.Status, (int)responseTask.Result.StatusCode, rawJson);
 		}
 
 		/// <summary>
