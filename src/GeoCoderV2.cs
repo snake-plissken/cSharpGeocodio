@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web;
 using System.Text;
 using Newtonsoft.Json;
+using cSharpGeocodio.ForwardGeocodingObjects;
 
 namespace cSharpGeocodio
 {
@@ -51,6 +52,12 @@ namespace cSharpGeocodio
 			GeoCodioServerResponse geoCodioResponse = await MakeForwardGeocodeWebRequest(
 				addressToGeocode, fieldQueryString);
 
+			if (geoCodioResponse.TaskStatus == TaskStatus.Faulted
+				|| geoCodioResponse.ServerResponseCode != 200)
+			{
+				throw new GeocodingException(geoCodioResponse.ServerResponseCode);
+			}
+
 			ForwardGeoCodeResult result = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(geoCodioResponse.RawJsonResponse);
 
 			//Wrap result from GeoCodio in BatchForwardGeocodeResult
@@ -88,6 +95,7 @@ namespace cSharpGeocodio
 			string responseData;
 
 			responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
+
 			BatchForwardGeoCodeResult results = JsonConvert.DeserializeObject<BatchForwardGeoCodeResult>(responseData);
 			return results;
 
@@ -143,6 +151,8 @@ namespace cSharpGeocodio
 			Task<HttpResponseMessage> responseTask;
 
 			responseTask = httpClient.GetAsync(queryString);
+
+			int status = (int)responseTask.Result.StatusCode;
 
 			string rawJson = await responseTask.Result.Content.ReadAsStringAsync();
 
