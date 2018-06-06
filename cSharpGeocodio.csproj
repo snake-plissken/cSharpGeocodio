@@ -49,6 +49,8 @@
     <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeRecord.cs" />
     <Compile Include="src\Reverse Geocoding\ReverseGeoCodeResult.cs" />
     <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodingResult.cs" />
+    <Compile Include="src\Ease of Access Wrapper Classes\ForwardGeocodingResponseWraper.cs" />
+    <Compile Include="src\Ease of Access Wrapper Classes\ReverseGeocodingResponseWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />
@@ -65,6 +67,7 @@
     <Folder Include="src\Json Response Backer Classes\" />
     <Folder Include="src\Forward Geocoding\" />
     <Folder Include="src\Reverse Geocoding\" />
+    <Folder Include="src\Ease of Access Wrapper Classes\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
