@@ -1,9 +1,8 @@
 using System;
 using Newtonsoft.Json;
 
-namespace cSharpGeocodio
+namespace cSharpGeocodio.ForwardGeocodingObjects
 {
-
 	public class BatchForwardGeoCodeRecord
 	{
 		public string Query { get; set; }

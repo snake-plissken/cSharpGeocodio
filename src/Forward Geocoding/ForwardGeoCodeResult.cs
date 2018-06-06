@@ -1,9 +1,8 @@
 using System;
 using Newtonsoft.Json;
 
-namespace cSharpGeocodio
+namespace cSharpGeocodio.ForwardGeocodingObjects
 {
-
 	public class ForwardGeoCodeResult
 	{
 		public ForwardGeoCodeInput Input { get; set;}

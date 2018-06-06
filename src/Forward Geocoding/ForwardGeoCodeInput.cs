@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace cSharpGeocodio
+namespace cSharpGeocodio.ForwardGeocodingObjects
 {
 	//
 	//Needed for response when geocoding single location
