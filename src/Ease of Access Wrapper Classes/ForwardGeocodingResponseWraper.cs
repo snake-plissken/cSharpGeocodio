@@ -17,7 +17,8 @@ namespace cSharpGeocodio
 				{
 					if (resultsDict.ContainsKey(record.Query))
 					{
-						//How to handle this?  Make end user worry about it?
+						//How to handle this i.e. user geocoded same address twice?
+						//Make end user worry about it?
 					}
 					else
 					{

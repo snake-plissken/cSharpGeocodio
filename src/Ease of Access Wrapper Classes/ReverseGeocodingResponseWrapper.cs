@@ -15,7 +15,8 @@ namespace cSharpGeocodio
 				{
 					if (resultsDict.ContainsKey(response.Query))
 					{
-						//How to handle dupe key?  Make end user worry about it?
+						//How to handle this i.e. user geocoded same address twice?
+						//Make end user worry about it?
 					}
 					else
 					{
