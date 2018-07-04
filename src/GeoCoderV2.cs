@@ -60,14 +60,12 @@ namespace cSharpGeocodio
 
 			ForwardGeoCodeResult result = JsonConvert.DeserializeObject<ForwardGeoCodeResult>(geoCodioResponse.RawJsonResponse);
 
-			//Wrap result from GeoCodio in BatchForwardGeocodeResult
-			BatchForwardGeoCodeRecord record = new BatchForwardGeoCodeRecord
-			{
-				Query = addressToGeocode,
-				Response = result
-			};
+			//Wrap result from GeoCodio in BatchForwardGeocodeResult because we always want to return
+			//a BatchForwardGeoCodeResult
+			BatchForwardGeoCodeRecord record = new BatchForwardGeoCodeRecord(addressToGeocode
+																			 , result);
 
-			return new BatchForwardGeoCodeResult { Results = new BatchForwardGeoCodeRecord[] { record } };
+			return new BatchForwardGeoCodeResult(new BatchForwardGeoCodeRecord[] { record });
 		}
 
 		/// <summary>
