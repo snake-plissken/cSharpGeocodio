@@ -191,16 +191,10 @@ namespace cSharpGeocodio
 
 			ReverseGeoCodeResult result = JsonConvert.DeserializeObject<ReverseGeoCodeResult>(json);
 
-			BatchReverseGeoCodeResponse response = new BatchReverseGeoCodeResponse
-			{
-				Query = latLong,
-				Response = result
-			};
+			BatchReverseGeoCodeResponse response = new BatchReverseGeoCodeResponse(latLong, result);
 
-			BatchReverseGeoCodingResult results = new BatchReverseGeoCodingResult
-			{
-				Results = new BatchReverseGeoCodeResponse[] { response }
-			};
+			BatchReverseGeoCodingResult results = new BatchReverseGeoCodingResult(
+				new BatchReverseGeoCodeResponse[] { response });
 
 			return results;
 		}
