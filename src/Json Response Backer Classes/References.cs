@@ -5,8 +5,24 @@ namespace cSharpGeocodio
 {
 	public class References
 	{
-		public References()
+		[JsonConstructor]
+		public References(string bioguideid, string thomasid
+		                  , string opensecretsid, string lisid
+		                  , string cspanid, string govtrackid, string votesmartid
+		                  , string ballotpediaid, string washingtonpostid
+		                  , string icpsrid, string wikipediaid)
 		{
+			BioguideId = bioguideid;
+			ThomasId = thomasid;
+			OpenSecretsId = opensecretsid;
+			LisId = lisid;
+			CspanId = cspanid;
+			GovtrackId = govtrackid;
+			VotesmartId = VotesmartId;
+			BallotpediaId = ballotpediaid;
+			WashingtonPostId = washingtonpostid;
+			IcpsrId = icpsrid;
+			WikipediaId = wikipediaid;
 		}
 
 		[JsonProperty("bioguide_id")]

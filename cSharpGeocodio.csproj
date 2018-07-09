@@ -37,7 +37,7 @@
     <Compile Include="src\GeocodingOperationType.cs" />
     <Compile Include="src\Json Response Backer Classes\FederalLegislator.cs" />
     <Compile Include="src\Json Response Backer Classes\Bio.cs" />
-    <Compile Include="src\Json Response Backer Classes\Contact.cs" />
+    <Compile Include="src\Json Response Backer Classes\ContactInfo.cs" />
     <Compile Include="src\Json Response Backer Classes\References.cs" />
     <Compile Include="src\Json Response Backer Classes\SocialNetworkInfo.cs" />
     <Compile Include="src\Json Response Backer Classes\CongressionalDistrictV2.cs" />
@@ -46,11 +46,11 @@
     <Compile Include="src\Forward Geocoding\ForwardGeoCodeInput.cs" />
     <Compile Include="src\Forward Geocoding\ForwardGeoCodeResult.cs" />
     <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeResult.cs" />
-    <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeRecord.cs" />
     <Compile Include="src\Reverse Geocoding\ReverseGeoCodeResult.cs" />
     <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodingResult.cs" />
     <Compile Include="src\Ease of Access Wrapper Classes\ForwardGeocodingResponseWraper.cs" />
     <Compile Include="src\Ease of Access Wrapper Classes\ReverseGeocodingResponseWrapper.cs" />
+    <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeRecord.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />

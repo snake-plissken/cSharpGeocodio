@@ -5,8 +5,15 @@ namespace cSharpGeocodio
 {
 	public class Bio
 	{
-		public Bio()
+		[JsonConstructor]
+		public Bio(string lastname, string firstname, string birthday
+		          , string gender, string party)
 		{
+			LastName = lastname;
+			FirstName = firstname;
+			Birthday = birthday;
+			Gender = gender;
+			Party = party;
 		}
 
 		[JsonProperty("last_name")]

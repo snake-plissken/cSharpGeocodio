@@ -5,6 +5,21 @@ namespace cSharpGeocodio
 {
 	public class GeoCodeInfo
 	{
+		[JsonConstructor]
+		public GeoCodeInfo(AddressComponent addresscomponents, string formattedaddress
+		                   , Location location, double accuracy
+		                   , string accuracytype, string source
+		                   , Fields fields)
+		{
+			AddressComponents = addresscomponents;
+			FormattedAddress = formattedaddress;
+			Location = location;
+			Accuracy = accuracy;
+			AccuracyType = accuracytype;
+			Source = source;
+			Fields = fields;
+		}
+
 		[JsonProperty("address_components")]
 		public AddressComponent AddressComponents { get; set; }
 		[JsonProperty("formatted_address")]

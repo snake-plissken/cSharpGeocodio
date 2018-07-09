@@ -5,8 +5,14 @@ namespace cSharpGeocodio
 {
 	public class ContactInfo
 	{
-		public ContactInfo()
+		[JsonConstructor]
+		public ContactInfo(string url, string address, string phone
+						  , string contactform)
 		{
+			Url = url;
+			Address = address;
+			Phone = phone;
+			ContactForm = contactform;
 		}
 
 		public string Url { get; set; }

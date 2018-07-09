@@ -5,9 +5,18 @@ namespace cSharpGeocodio
 {
 	public class FederalLegislator
 	{
-		public FederalLegislator()
+		[JsonConstructor]
+		public FederalLegislator(string type, Bio bio, ContactInfo contactinfo
+								, SocialNetworkInfo socialnetworkinfo
+								, References references
+		                        , string source)
 		{
-			
+			Type = type;
+			Bio = bio;
+			ContactInfo = contactinfo;
+			SocialNetworkInfo = socialnetworkinfo;
+			References = references;
+			Source = source;
 		}
 
 		public string Type { get; set; }

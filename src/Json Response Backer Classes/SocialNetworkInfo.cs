@@ -5,8 +5,16 @@ namespace cSharpGeocodio
 {
 	public class SocialNetworkInfo
 	{
-		public SocialNetworkInfo()
+		[JsonConstructor]
+		public SocialNetworkInfo(string rssurl, string twitter
+		                         , string facebook, string youtube
+		                         , string youtubeid)
 		{
+			RssUrl = rssurl;
+			Twitter = twitter;
+			Facebook = facebook;
+			YouTube = youtube;
+			YouTubeId = youtubeid;
 		}
 
 		[JsonProperty("rss_url")]
