@@ -29,7 +29,7 @@
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
     <Compile Include="src\QueryFieldEnums.cs" />
-    <Compile Include="src\Json Response Backer Classes\FieldClasses.cs" />
+    <Compile Include="src\Json Response Backer Classes\Fields.cs" />
     <Compile Include="src\Json Response Backer Classes\AddressComponent.cs" />
     <Compile Include="src\Json Response Backer Classes\Location.cs" />
     <Compile Include="src\Json Response Backer Classes\GeoCodeInfo.cs" />
@@ -56,6 +56,7 @@
     <Reference Include="System.Web" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Package>monodevelop</Package>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
