@@ -27,7 +27,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="src\GeocodingException.cs" />
-    <Compile Include="src\GeoCoder.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
     <Compile Include="src\QueryFieldEnums.cs" />
     <Compile Include="src\Json Response Backer Classes\FieldClasses.cs" />
