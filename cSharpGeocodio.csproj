@@ -7,6 +7,12 @@
     <RootNamespace>cSharpGeocodio</RootNamespace>
     <AssemblyName>cSharpGeocodio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Owners>Frank</Owners>
+    <PackageProjectUrl>https://github.com/snake-plissken/cSharpGeocodio</PackageProjectUrl>
+    <Summary>A .NET library for interfacing with Geocodio, a geo-coding service</Summary>
+    <PackageTags>geocoding, web, API</PackageTags>
+    <Title>cSharpGeocodio</Title>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +63,8 @@
     <Compile Include="src\Categorical Json Response Backer Classes\TimeZone.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\Census.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\MetroMicroStatisticalArea.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\CombinedStatisticalArea.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />
