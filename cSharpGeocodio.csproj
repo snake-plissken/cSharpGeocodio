@@ -7,6 +7,12 @@
     <RootNamespace>cSharpGeocodio</RootNamespace>
     <AssemblyName>cSharpGeocodio</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Owners>Frank</Owners>
+    <PackageProjectUrl>https://github.com/snake-plissken/cSharpGeocodio</PackageProjectUrl>
+    <Summary>A .NET library for interfacing with Geocodio, a geo-coding service</Summary>
+    <PackageTags>geocoding, web, API</PackageTags>
+    <Title>cSharpGeocodio</Title>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,17 +35,11 @@
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
     <Compile Include="src\QueryFieldEnums.cs" />
-    <Compile Include="src\Json Response Backer Classes\FieldClasses.cs" />
-    <Compile Include="src\Json Response Backer Classes\AddressComponent.cs" />
-    <Compile Include="src\Json Response Backer Classes\Location.cs" />
-    <Compile Include="src\Json Response Backer Classes\GeoCodeInfo.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Fields.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\AddressComponent.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Location.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\GeoCodeInfo.cs" />
     <Compile Include="src\GeocodingOperationType.cs" />
-    <Compile Include="src\Json Response Backer Classes\FederalLegislator.cs" />
-    <Compile Include="src\Json Response Backer Classes\Bio.cs" />
-    <Compile Include="src\Json Response Backer Classes\ContactInfo.cs" />
-    <Compile Include="src\Json Response Backer Classes\References.cs" />
-    <Compile Include="src\Json Response Backer Classes\SocialNetworkInfo.cs" />
-    <Compile Include="src\Json Response Backer Classes\CongressionalDistrictV2.cs" />
     <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodeResponse.cs" />
     <Compile Include="src\GeoCodioServerResponse.cs" />
     <Compile Include="src\Forward Geocoding\ForwardGeoCodeInput.cs" />
@@ -50,12 +50,28 @@
     <Compile Include="src\Ease of Access Wrapper Classes\ForwardGeocodingResponseWraper.cs" />
     <Compile Include="src\Ease of Access Wrapper Classes\ReverseGeocodingResponseWrapper.cs" />
     <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeRecord.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\State Legislature\StateLegislature.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\State Legislature\StateLegislator.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\School District\SchoolDistrict.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\School District\SchoolDistricts.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Federal Legislature\CongressionalDistrictV2.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Federal Legislature\FederalLegislator.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\Bio.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\ContactInfo.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\References.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\SocialNetworkInfo.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\TimeZone.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\MetroMicroStatisticalArea.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\CombinedStatisticalArea.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Package>monodevelop</Package>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -64,10 +80,14 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\Json Response Backer Classes\" />
+    <Folder Include="src\Categorical Json Response Backer Classes\" />
     <Folder Include="src\Forward Geocoding\" />
     <Folder Include="src\Reverse Geocoding\" />
     <Folder Include="src\Ease of Access Wrapper Classes\" />
+    <Folder Include="src\Categorical Json Response Backer Classes\State Legislature\" />
+    <Folder Include="src\Categorical Json Response Backer Classes\School District\" />
+    <Folder Include="src\Categorical Json Response Backer Classes\Federal Legislature\" />
+    <Folder Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
