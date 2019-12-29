@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace cSharpGeocodio
 {
@@ -19,7 +20,7 @@ namespace cSharpGeocodio
 		public TimeZone TimeZone { get; set; }
 
 		[JsonProperty("census")]
-		public Census Census { get; set; }
+		public Dictionary<string, Census> Census { get; set; }
 
 	}
 

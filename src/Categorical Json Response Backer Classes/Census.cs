@@ -1,8 +1,10 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace cSharpGeocodio
 {
+
 	public class Census
 	{
 
@@ -15,9 +17,6 @@ namespace cSharpGeocodio
 		[JsonProperty("county_fips")]
 		public string CountyFIPS { get; set; }
 
-		[JsonProperty("place_fips")]
-		public string PlaceFIPS { get; set; }
-
 		[JsonProperty("tract_code")]
 		public string TractCode { get; set; }
 
@@ -28,12 +27,21 @@ namespace cSharpGeocodio
 		public string BlockGroup { get; set; }
 
 		[JsonProperty("full_fips")]
-		public string FullFips { get; set; }
+		public string Full_FIPS { get; set; }
+
+        [JsonProperty("place")]
+        public Place Place { get; set; }
 
 		[JsonProperty("metro_micro_statistical_area")]
 		public MetroMicroStatisticalArea MetroMicroStatisticalArea { get; set; }
 
 		[JsonPropertyAttribute("combined_statistical_area")]
 		public CombinedStatisticalArea CombinedStatisticalArea { get; set; }
+
+        [JsonProperty("metropolitan_division")]
+        public CombinedStatisticalArea MetropolitanDivision { get; set; }
+
+        [JsonProperty("source")]
+        public string Source { get; set; }
 	}
 }
