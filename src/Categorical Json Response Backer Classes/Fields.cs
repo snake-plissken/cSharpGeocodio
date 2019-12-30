@@ -22,6 +22,9 @@ namespace cSharpGeocodio
 		[JsonProperty("census")]
 		public Dictionary<string, Census> Census { get; set; }
 
-	}
+        [JsonProperty("acs")]
+        public ACS ACS_Results { get; set; }
+
+    }
 
 }

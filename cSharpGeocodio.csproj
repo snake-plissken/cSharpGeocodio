@@ -32,7 +32,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="src\Categorical Json Response Backer Classes\Place.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\ACS.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\ACS_Meta.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\Place.cs" />
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
     <Compile Include="src\QueryFieldEnums.cs" />
@@ -62,9 +64,9 @@
     <Compile Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\References.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\SocialNetworkInfo.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\TimeZone.cs" />
-    <Compile Include="src\Categorical Json Response Backer Classes\Census.cs" />
-    <Compile Include="src\Categorical Json Response Backer Classes\MetroMicroStatisticalArea.cs" />
-    <Compile Include="src\Categorical Json Response Backer Classes\CombinedStatisticalArea.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\Census.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\MetroMicroStatisticalArea.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\CombinedStatisticalArea.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
