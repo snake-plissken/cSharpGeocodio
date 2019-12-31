@@ -2,8 +2,7 @@
 
 ## Website for the service: https://geocod.io/
 
-# Please note, this is meant for accesing the Geocodio version 1.2 API.  For higher versions, please use the main branch or an
-# applicable branch (if it exists).
+# Please note, this is meant for accesing the Geocodio version 1.2 API.  For higher versions, please use the main branch or an applicable branch (if it exists).
 
 Usage and examples are below.
 
