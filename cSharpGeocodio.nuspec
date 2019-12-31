@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>cSharpGeocodio</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <title>A C# library for interfacing with Geocodio, a geo-coding service.  For use with the Geocodio 1.2 API.</title>
     <authors>Frank Deasey</authors>
     <owners>Frank Deasey</owners>
@@ -13,7 +13,7 @@
     <description>A C# library for interfacing with Geocodio, a geo-coding service.  For use with the Geocodio 1.2 API.</description>
     <releaseNotes>Update to Nuget package, license changes to BSD-3-Clause, no code changes</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>C# geo-coding Geocodio GIS utility reverse-geo-coding API</tags>
+    <tags>C# .NET geo-coding Geocodio GIS utility reverse-geo-coding API</tags>
     <dependencies>
       <dependency  id="Newtonsoft.Json" version="10.0.3" />
     </dependencies>

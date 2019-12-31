@@ -4,7 +4,7 @@
 
 # Please note, this is meant for accesing the Geocodio version 1.2 API.  For higher versions, please use the main branch or an applicable branch (if it exists).
 
-### To use, install the nuget package cSharpGeocodio, version 1.0.2
+### To use, install the nuget package cSharpGeocodio version along track version 1.0.* (currently we are at 1.0.3)
 
 Usage and examples are below.
 
