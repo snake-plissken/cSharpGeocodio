@@ -2,6 +2,9 @@
 
 ## Website for the service: https://geocod.io/
 
+# Please note, this is meant for accesing the Geocodio version 1.2 API.  For higher versions, please use the main branch or an
+# applicable branch (if it exists).
+
 Usage and examples are below.
 
 Note on exceptions and errors from Geocodio:
@@ -114,14 +117,3 @@ for (int i = 0; i < batchReverseResults.Length; i++)
 }
 
 ```
-
-Design Notes/Stuff:
-
-1. Remaining To-Do:
-  * Add some stuff to ease access properties the actual geocoding responses.  BatchForwardGeoCodeResult and BatchReverseGeoCodingResult are clunky little guys at the moment.  This is the next priority.
-  * While the JSON backer classes have been cleaned up, the backer classes for the optional fields (e.g Census Tract Info) still need to be cleaned up
-2. Design Info/Notes/Thoughts:
-  * The Christmas 2017 commits made some substantial changes.  My apologies if they broke anything but I was pretty sure no one was using this.
-  * The goals were with these changes were to condense the geocoding functions and to return the same types from the forward and reverse mthods, respectively, i.e. the forward and batch forward methods each return a `Task<BatchForwardGeoCodeResult>` object
-  * I considered writing the geocoding methods to take interfaces but it seemed fine to just use strings or lists of strings instead
-  * I also thought of using named/optional parameters in these methods but I felt it disguised, too much, the intent when calling these methods.  It's easier to see what your call is doing when you see the field enumerations declared in the method calls

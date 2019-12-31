@@ -76,17 +76,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cSharpGeocodio.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Categorical Json Response Backer Classes\" />
-    <Folder Include="src\Forward Geocoding\" />
-    <Folder Include="src\Reverse Geocoding\" />
-    <Folder Include="src\Ease of Access Wrapper Classes\" />
-    <Folder Include="src\Categorical Json Response Backer Classes\State Legislature\" />
-    <Folder Include="src\Categorical Json Response Backer Classes\School District\" />
-    <Folder Include="src\Categorical Json Response Backer Classes\Federal Legislature\" />
-    <Folder Include="src\Categorical Json Response Backer Classes\Informational and Social Networking\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
