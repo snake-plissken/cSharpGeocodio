@@ -79,6 +79,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cSharpGeocodio.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

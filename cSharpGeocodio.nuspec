@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>cSharpGeocodio</id>
+    <version>2.0.0</version>
+    <title>A C# library for interfacing with Geocodio, a geo-coding service.</title>
+    <authors>Frank Deasey</authors>
+    <owners>Frank Deasey</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">BSD-3-Clause</license>
+    <projectUrl>https://github.com/snake-plissken/cSharpGeocodio/</projectUrl>
+    <iconUrl>https://api.nuget.org/v3-flatcontainer/csharpgeocodio/1.0.1/icon</iconUrl>
+    <description>A C# library for interfacing with Geocodio, a geo-coding service.</description>
+    <releaseNotes>Contains updates so the library can work fully with the Geocodio 1.4 API and utilize, among other things, the updated Geocodio 
+    Census and ACS fields.  Also contains contains updates to improve the geocoding methods and generally improve the library.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>C# .NET geo-coding Geocodio GIS utility reverse-geo-coding API</tags>
+    <dependencies>
+      <dependency  id="Newtonsoft.Json" version="10.0.3" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".\bin\Release\cSharpGeocodio.dll" target="lib" />
+  </files>
+</package>
