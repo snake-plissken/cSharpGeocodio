@@ -13,7 +13,8 @@ namespace cSharpGeocodio
 	public class GeoCoderV2
 	{
 		private string _apiKey;
-		private static string _apiBaseUrl = "https://api.geocod.io/v1.2/";
+        private static string _geocodioApiVersion = "1.4";
+		private static string _apiBaseUrl = $"https://api.geocod.io/{_geocodioApiVersion}/";
 		private string _forwardGeoCodeBaseUrl = _apiBaseUrl + "geocode/";
 		private string _reverseGeoCodeBaseUrl = _apiBaseUrl + "reverse/";
 
@@ -21,6 +22,11 @@ namespace cSharpGeocodio
 		{
 			this._apiKey = apiKey;
 		}
+
+        public static string ClientGeocodioApiVersion
+        {
+            get { return _geocodioApiVersion; }
+        }
 
 		/// <summary>
 		/// Method which handles single geocoding requests.

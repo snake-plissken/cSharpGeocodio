@@ -50,8 +50,8 @@
     <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeResult.cs" />
     <Compile Include="src\Reverse Geocoding\ReverseGeoCodeResult.cs" />
     <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodingResult.cs" />
-    <Compile Include="src\Ease of Access Wrapper Classes\ForwardGeocodingResponseWraper.cs" />
-    <Compile Include="src\Ease of Access Wrapper Classes\ReverseGeocodingResponseWrapper.cs" />
+    <Compile Include="src\GeocodioResultHelpers\ForwardGeocodingResultHelpers.cs" />
+    <Compile Include="src\GeocodioResultHelpers\ReverseGeocodingResultHelpers.cs" />
     <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeRecord.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\State Legislature\StateLegislature.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\State Legislature\StateLegislator.cs" />
