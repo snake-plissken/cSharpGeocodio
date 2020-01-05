@@ -13,14 +13,21 @@ namespace cSharpGeocodio
 	public class GeoCoderV2
 	{
 		private string _apiKey;
+        private HttpClient _httpClient;
+
         private static string _geocodioApiVersion = "v1.4";
 		private static string _apiBaseUrl = $"https://api.geocod.io/{_geocodioApiVersion}/";
 		private string _forwardGeoCodeBaseUrl = _apiBaseUrl + "geocode/";
 		private string _reverseGeoCodeBaseUrl = _apiBaseUrl + "reverse/";
 
-		public GeoCoderV2(string apiKey)
+        const string forwardGeocodeEndpoint = "geocode/";
+        const string reverseGeocodeEndpoint = "reverse/";
+
+        public GeoCoderV2(string apiKey)
 		{
 			this._apiKey = apiKey;
+            this._httpClient = new HttpClient();
+            this._httpClient.BaseAddress = new Uri(_apiBaseUrl);
 		}
 
         public static string ClientGeocodioApiVersion
@@ -44,8 +51,6 @@ namespace cSharpGeocodio
 
 			string fieldQueryString = this.PrepareDataFieldsQueryString(fieldSettings);
 
-            //string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
-
             GeoCodioServerResponse geoCodioResponse = await MakeForwardGeocodeWebRequest(
 				addressToGeocode, fieldQueryString);
 
@@ -59,8 +64,7 @@ namespace cSharpGeocodio
 
 			//Wrap result from GeoCodio in BatchForwardGeocodeResult because we always want to return
 			//a BatchForwardGeoCodeResult
-			BatchForwardGeoCodeRecord record = new BatchForwardGeoCodeRecord(addressToGeocode
-																			 , result);
+			BatchForwardGeoCodeRecord record = new BatchForwardGeoCodeRecord(addressToGeocode, result);
 
 			return new BatchForwardGeoCodeResult(new BatchForwardGeoCodeRecord[] { record });
 		}
@@ -126,22 +130,16 @@ namespace cSharpGeocodio
 		private async Task<GeoCodioServerResponse> MakeForwardGeocodeWebRequest(string addressToGeocode, string fieldQueryString)
 		{
 
-			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
-
-			HttpClient httpClient = new HttpClient();
-			httpClient.BaseAddress = baseAddress;
-
 			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleForward, addressToGeocode, fieldQueryString);
 
-			Task<HttpResponseMessage> responseTask;
+            string url = System.IO.Path.Combine(forwardGeocodeEndpoint, queryString);
 
-			responseTask = httpClient.GetAsync(queryString);
-
-			int status = (int)responseTask.Result.StatusCode;
+			Task<HttpResponseMessage> responseTask = this._httpClient.GetAsync(url);
 
 			string rawJson = await responseTask.Result.Content.ReadAsStringAsync();
 
 			return GeoCodioServerResponse.MakeServerResponse(responseTask.Status, (int)responseTask.Result.StatusCode, rawJson);
+
 		}
 
 		/// <summary>
