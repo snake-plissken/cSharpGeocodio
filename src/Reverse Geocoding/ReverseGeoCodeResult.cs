@@ -12,6 +12,7 @@ namespace cSharpGeocodio
 		}
 
 		public GeoCodeInfo[] Results { get; set; }
+        public string[] _warnings { get; set; }
 	}
 
 }

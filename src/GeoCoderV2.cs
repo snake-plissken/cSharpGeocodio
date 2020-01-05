@@ -13,7 +13,7 @@ namespace cSharpGeocodio
 	public class GeoCoderV2
 	{
 		private string _apiKey;
-        private static string _geocodioApiVersion = "1.4";
+        private static string _geocodioApiVersion = "v1.4";
 		private static string _apiBaseUrl = $"https://api.geocod.io/{_geocodioApiVersion}/";
 		private string _forwardGeoCodeBaseUrl = _apiBaseUrl + "geocode/";
 		private string _reverseGeoCodeBaseUrl = _apiBaseUrl + "reverse/";

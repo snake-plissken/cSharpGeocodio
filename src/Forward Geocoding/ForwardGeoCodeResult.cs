@@ -16,6 +16,7 @@ namespace cSharpGeocodio.ForwardGeocodingObjects
 
 		public ForwardGeoCodeInput Input { get; set;}
 		public GeoCodeInfo[] Results { get; set; }
+        public string[] _warnings { get; set; }
 	}
 	
 }
