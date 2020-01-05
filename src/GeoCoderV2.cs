@@ -39,23 +39,14 @@ namespace cSharpGeocodio
 		/// <param name="querySchoolDist">Query school diststring info.</param>
 		/// <param name="queryCensus">Query census tract info.</param>
 		/// <param name="queryTimeZone">Query time zone info.</param>
-		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode
-		                                                        , QueryCongressional queryCongressional
-		                                                        , QueryStateLegislature queryStateLegis
-		                                                        , QuerySchoolDistrict querySchoolDist
-		                                                        , QueryCensusInfo queryCensus
-		                                                        , QueryTimeZone queryTimeZone)
-		{
+		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode, GeocodioDataFieldSettings fieldSettings)
+        {
 
-			string fieldQueryString = BuildFieldsQueryString(queryCongressional
-			                                                 , queryStateLegis
-															 , querySchoolDist
-			                                                 , queryCensus
-															 , queryTimeZone);
+			string fieldQueryString = this.PrepareDataFieldsQueryString(fieldSettings);
 
-			//string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
+            //string json = await MakeForwardGeocodeWebRequest(addressToGeocode, fieldQueryString);
 
-			GeoCodioServerResponse geoCodioResponse = await MakeForwardGeocodeWebRequest(
+            GeoCodioServerResponse geoCodioResponse = await MakeForwardGeocodeWebRequest(
 				addressToGeocode, fieldQueryString);
 
 			if (geoCodioResponse.TaskStatus == TaskStatus.Faulted
@@ -85,17 +76,11 @@ namespace cSharpGeocodio
 		/// <param name="querySchoolDist">Query school diststring info.</param>
 		/// <param name="queryCensus">Query census tract info.</param>
 		/// <param name="queryTimeZone">Query time zone info.</param>
-		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(List<string> inputAddresses, QueryCongressional queryCongressional
-																, QueryStateLegislature queryStateLegis
-																, QuerySchoolDistrict querySchoolDist
-																, QueryCensusInfo queryCensus
-																, QueryTimeZone queryTimeZone)
-		{
-			string fieldQueryString = BuildFieldsQueryString(queryCongressional, queryStateLegis
-															 , querySchoolDist, queryCensus
-															 , queryTimeZone);
+		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(List<string> inputAddresses, GeocodioDataFieldSettings fieldSettings)
+        {
+			string fieldQueryString = this.PrepareDataFieldsQueryString(fieldSettings);
 
-			string jsonDataString = JsonConvert.SerializeObject(inputAddresses);
+            string jsonDataString = JsonConvert.SerializeObject(inputAddresses);
 			string responseData;
 
 			responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
@@ -182,16 +167,9 @@ namespace cSharpGeocodio
 		/// <param name="querySchoolDist">Query school diststring info.</param>
 		/// <param name="queryCensus">Query census tract info.</param>
 		/// <param name="queryTimeZone">Query time zone info.</param>
-		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(string latLong
-		                                     , QueryCongressional queryCongressional
-											 , QueryStateLegislature queryStateLegis
-											 , QuerySchoolDistrict querySchoolDist
-											 , QueryCensusInfo queryCensus
-											 , QueryTimeZone queryTimeZone)
-		{
-			string fieldQueryString = BuildFieldsQueryString(queryCongressional, queryStateLegis
-															 , querySchoolDist, queryCensus
-															 , queryTimeZone);
+		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(string latLong, GeocodioDataFieldSettings fieldSettings)
+        {
+            string fieldQueryString = this.PrepareDataFieldsQueryString(fieldSettings);
 
 			string json = await ReverseGeocodeWebRequest(latLong, fieldQueryString);
 
@@ -217,19 +195,11 @@ namespace cSharpGeocodio
 		/// <param name="querySchoolDist">Query school diststring info.</param>
 		/// <param name="queryCensus">Query census tract info.</param>
 		/// <param name="queryTimeZone">Query time zone info.</param>
-		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(List<string> inputAddresses
-											 , QueryCongressional queryCongressional
-											 , QueryStateLegislature queryStateLegis
-											 , QuerySchoolDistrict querySchoolDist
-											 , QueryCensusInfo queryCensus
-											 , QueryTimeZone queryTimeZone)
+		public async Task<BatchReverseGeoCodingResult> ReverseGeocodeAsync(List<string> inputAddresses, GeocodioDataFieldSettings fieldSettings)
 		{
-			string fieldsQuery = BuildFieldsQueryString(queryCongressional, queryStateLegis
-															 , querySchoolDist, queryCensus
-															 , queryTimeZone);
+			string fieldsQuery = this.PrepareDataFieldsQueryString(fieldSettings);
 
-
-			string jsonPostData = JsonConvert.SerializeObject(inputAddresses);
+            string jsonPostData = JsonConvert.SerializeObject(inputAddresses);
 
 			string json = await BatchReverseGeocodeWebRequest(jsonPostData, fieldsQuery);
 
@@ -296,17 +266,40 @@ namespace cSharpGeocodio
 			return await response.Content.ReadAsStringAsync();
 		}
 
+        public string PrepareDataFieldsQueryString(GeocodioDataFieldSettings fieldSettings)
+        {
 
-		/// <summary>
-		/// Prepares the mandatory parts of the URL for sending a request to Geocodio
-		/// </summary>
-		/// <returns>A string which is the URL we will access</returns>
-		/// <param name="geocodingOperation">The type of Geocoding operation.</param>
-		/// <param name="payload">Payload; only used when sending a single reverse geocode operation</param>
-		/// <param name="fieldQueryString">The fields we wish to query.</param>
-		public string PrepareWebQueryString(GeocodingOperationType geocodingOperation
+            var fields = new List<string>();
+
+            foreach (var fieldKey in GeocodioDataFieldSettings.ValidGeocodioFields)
+            {
+                if (fieldSettings.GetFieldQueryStatus(fieldKey))
+                {
+                    fields.Add(fieldKey);
+                }
+            }
+
+            if (fields.Count == 0)
+            {
+                //No fields to query, give 'em an empty string!
+                return "";
+            }
+            else
+            {
+                return "&fields=" + String.Join(",", fields);
+            }
+        }
+
+        /// <summary>
+        /// Prepares the mandatory parts of the URL for sending a request to Geocodio
+        /// </summary>
+        /// <returns>A string which is the URL we will access</returns>
+        /// <param name="geocodingOperation">The type of Geocoding operation.</param>
+        /// <param name="payload">Payload; only used when sending a single reverse geocode operation</param>
+        /// <param name="dataFieldsQueryString">The fields we wish to query.</param>
+        public string PrepareWebQueryString(GeocodingOperationType geocodingOperation
 		                                    , string payload
-		                                    , string fieldQueryString)
+		                                    , string dataFieldsQueryString)
 		{
 			if (geocodingOperation == GeocodingOperationType.SingleForward)
 			{
@@ -314,7 +307,7 @@ namespace cSharpGeocodio
 				string forwardGeoCodequery = "?api_key={0}&q={1}";
 
 				string query = HttpUtility.UrlEncode(payload);
-				query = query + fieldQueryString;
+				query = query + dataFieldsQueryString;
 				query = String.Format(forwardGeoCodequery, this._apiKey, query);
 				return query;
 			}
@@ -323,7 +316,7 @@ namespace cSharpGeocodio
 				//Batch forward
 				string batchForwardGeocodeQuery = "?api_key={0}";
 				string query = String.Format(batchForwardGeocodeQuery, this._apiKey);
-				query = query + fieldQueryString;
+				query = query + dataFieldsQueryString;
 				return query;
 			}
 			else if (geocodingOperation == GeocodingOperationType.SingleReverse)
@@ -331,7 +324,7 @@ namespace cSharpGeocodio
 				//Single reverse
 				string singleReverseGeoCodeQuery = "?api_key={0}&q={1}";
 				string queryString = String.Format(singleReverseGeoCodeQuery, this._apiKey, payload);
-				queryString = queryString + fieldQueryString;
+				queryString = queryString + dataFieldsQueryString;
 				return queryString;
 			}
 			else
@@ -339,69 +332,9 @@ namespace cSharpGeocodio
 				//Batch revsere
 				string batchReverseGeocodeQuery = "?api_key={0}";
 				string query = String.Format(batchReverseGeocodeQuery, this._apiKey);
-				query = query + fieldQueryString;
+				query = query + dataFieldsQueryString;
 				return query;
 			}
 		}
-
-		/// <summary>
-		/// Builds the field query string which will be appended
-		/// to the URL.
-		/// </summary>
-		/// <returns>A string containing the fields to be queried.</returns>
-		/// <param name="queryCongress">Query Congreess rep and sens.</param>
-		/// <param name="queryStateLegis">Query state legislators.</param>
-		/// <param name="querySchoolDist">Query school district.</param>
-		/// <param name="queryCensus">Query census tract.</param>
-		/// <param name="queryTimeZone">Query time zone.</param>
-		public string BuildFieldsQueryString(QueryCongressional queryCongress
-		                                     , QueryStateLegislature queryStateLegis
-											 , QuerySchoolDistrict querySchoolDist
-		                                     , QueryCensusInfo queryCensus
-		                                     , QueryTimeZone queryTimeZone)
-		{
-			string query = "";
-
-			List<string> fields = new List<string>();
-
-			if (queryCongress == QueryCongressional.Yes)
-			{
-				fields.Add("cd");
-			}
-			if (queryStateLegis == QueryStateLegislature.Yes)
-			{
-				fields.Add("stateleg");
-			}
-			if (querySchoolDist == QuerySchoolDistrict.Yes)
-			{
-				fields.Add("school");
-			}
-			if (queryCensus == QueryCensusInfo.Yes)
-			{
-				fields.Add("census");
-			}
-			if (queryTimeZone == QueryTimeZone.Yes)
-			{
-				fields.Add("timezone");
-			}
-
-			//No fields queried so return empty string?
-			//Or should we just return "fields=" with no values?
-			if (fields.Count == 0)
-			{
-				return query;
-			}
-			else
-			{
-
-				query = String.Join(",", fields);
-				query = "&fields=" + query;
-				return query;
-			}
-
-		}
-
-
-
 	}
 }

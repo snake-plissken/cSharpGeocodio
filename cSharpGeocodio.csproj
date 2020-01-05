@@ -38,7 +38,6 @@
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
     <Compile Include="src\GeocodioDataFieldSettings.cs" />
-    <Compile Include="src\QueryFieldEnums.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\Fields.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\AddressComponent.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\Location.cs" />
