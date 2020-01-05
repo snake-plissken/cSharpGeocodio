@@ -98,9 +98,7 @@ namespace cSharpGeocodio
 		private async Task<string> BatchForwardGeocodeWebRequest(string jsonDataString, string fieldQueryString)
 		{
 
-			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchForward
-													   , ""
-													   , fieldQueryString);
+			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchForward, "", fieldQueryString);
 
 			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
 
@@ -133,9 +131,7 @@ namespace cSharpGeocodio
 			HttpClient httpClient = new HttpClient();
 			httpClient.BaseAddress = baseAddress;
 
-			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleForward
-												 , addressToGeocode
-												 , fieldQueryString);
+			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleForward, addressToGeocode, fieldQueryString);
 
 			Task<HttpResponseMessage> responseTask;
 
@@ -145,15 +141,7 @@ namespace cSharpGeocodio
 
 			string rawJson = await responseTask.Result.Content.ReadAsStringAsync();
 
-			//if (response.StatusCode != System.Net.HttpStatusCode.OK)
-			//{
-			//	throw new GeocodingException((int)response.StatusCode);
-			//}
-
-			//return await response.Content.ReadAsStringAsync();
-
-			return GeoCodioServerResponse.MakeServerResponse(
-				responseTask.Status, (int)responseTask.Result.StatusCode, rawJson);
+			return GeoCodioServerResponse.MakeServerResponse(responseTask.Status, (int)responseTask.Result.StatusCode, rawJson);
 		}
 
 		/// <summary>
@@ -177,8 +165,7 @@ namespace cSharpGeocodio
 
 			BatchReverseGeoCodeResponse response = new BatchReverseGeoCodeResponse(latLong, result);
 
-			BatchReverseGeoCodingResult results = new BatchReverseGeoCodingResult(
-				new BatchReverseGeoCodeResponse[] { response });
+			BatchReverseGeoCodingResult results = new BatchReverseGeoCodingResult(new BatchReverseGeoCodeResponse[] { response });
 
 			return results;
 		}
@@ -218,9 +205,7 @@ namespace cSharpGeocodio
 		{
 			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
 
-			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleReverse
-													   , latLong
-													   , fieldQueryString);
+			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleReverse, latLong, fieldQueryString);
 
 			HttpClient client = new HttpClient();
 			client.BaseAddress = baseAddress;
@@ -247,9 +232,7 @@ namespace cSharpGeocodio
 
 			//Pass empty string as second parameter; locations to reverse geocode
 			//are passed as payload argument to HttpClient
-			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchRevsere
-													   , ""
-													   , fieldQueryString);
+			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchRevsere, "", fieldQueryString);
 
 			HttpClient client = new HttpClient();
 			client.BaseAddress = baseAddress;
