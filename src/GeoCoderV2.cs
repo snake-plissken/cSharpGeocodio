@@ -15,38 +15,32 @@ namespace cSharpGeocodio
 		private string _apiKey;
         private HttpClient _httpClient;
 
-        private static string _geocodioApiVersion = "v1.4";
-		private static string _apiBaseUrl = $"https://api.geocod.io/{_geocodioApiVersion}/";
-		private string _forwardGeoCodeBaseUrl = _apiBaseUrl + "geocode/";
-		private string _reverseGeoCodeBaseUrl = _apiBaseUrl + "reverse/";
-
         const string forwardGeocodeEndpoint = "geocode/";
         const string reverseGeocodeEndpoint = "reverse/";
+
+        public static string ClientGeocodioApiVersion { get; } = "v1.4";
+
+        public static string GeocodioApiBaseUrl { get; } = $"https://api.geocod.io/{ClientGeocodioApiVersion}/";
 
         public GeoCoderV2(string apiKey)
 		{
 			this._apiKey = apiKey;
             this._httpClient = new HttpClient();
-            this._httpClient.BaseAddress = new Uri(_apiBaseUrl);
+            this._httpClient.BaseAddress = new Uri(GeocodioApiBaseUrl);
 		}
 
-        public static string ClientGeocodioApiVersion
-        {
-            get { return _geocodioApiVersion; }
-        }
-
-		/// <summary>
-		/// Method which handles single geocoding requests.
-		/// </summary>
-		/// <returns>A single address to Geocodein the form 
-		/// "123 Bad Kitty St, Bad Kity City, State ZipCode</returns>
-		/// <param name="addressToGeocode">Address to geocode.</param>
-		/// <param name="queryCongressional">Query the Congressional info.</param>
-		/// <param name="queryStateLegis">Query state legislators info.</param>
-		/// <param name="querySchoolDist">Query school diststring info.</param>
-		/// <param name="queryCensus">Query census tract info.</param>
-		/// <param name="queryTimeZone">Query time zone info.</param>
-		public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode, GeocodioDataFieldSettings fieldSettings)
+        /// <summary>
+        /// Method which handles single geocoding requests.
+        /// </summary>
+        /// <returns>A single address to Geocodein the form 
+        /// "123 Bad Kitty St, Bad Kity City, State ZipCode</returns>
+        /// <param name="addressToGeocode">Address to geocode.</param>
+        /// <param name="queryCongressional">Query the Congressional info.</param>
+        /// <param name="queryStateLegis">Query state legislators info.</param>
+        /// <param name="querySchoolDist">Query school diststring info.</param>
+        /// <param name="queryCensus">Query census tract info.</param>
+        /// <param name="queryTimeZone">Query time zone info.</param>
+        public async Task<BatchForwardGeoCodeResult> ForwardGeocodeAsync(string addressToGeocode, GeocodioDataFieldSettings fieldSettings)
         {
 
 			string fieldQueryString = this.PrepareDataFieldsQueryString(fieldSettings);
@@ -85,9 +79,8 @@ namespace cSharpGeocodio
 			string fieldQueryString = this.PrepareDataFieldsQueryString(fieldSettings);
 
             string jsonDataString = JsonConvert.SerializeObject(inputAddresses);
-			string responseData;
 
-			responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
+			string responseData = await BatchForwardGeocodeWebRequest(jsonDataString, fieldQueryString);
 
 			BatchForwardGeoCodeResult results = JsonConvert.DeserializeObject<BatchForwardGeoCodeResult>(responseData);
 			return results;
@@ -104,14 +97,11 @@ namespace cSharpGeocodio
 
 			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchForward, "", fieldQueryString);
 
-			Uri baseAddress = new Uri(this._forwardGeoCodeBaseUrl);
+            string url = System.IO.Path.Combine(forwardGeocodeEndpoint, queryString);
 
-			HttpClient client = new HttpClient();
-			client.BaseAddress = baseAddress;
+            StringContent payload = new StringContent(jsonDataString, Encoding.UTF8, "application/json");
 
-			StringContent payload = new StringContent(jsonDataString, Encoding.UTF8, "application/json");
-
-			HttpResponseMessage response = await client.PostAsync(queryString, payload);
+			HttpResponseMessage response = await this._httpClient.PostAsync(url, payload);
 
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
@@ -163,10 +153,8 @@ namespace cSharpGeocodio
 
 			BatchReverseGeoCodeResponse response = new BatchReverseGeoCodeResponse(latLong, result);
 
-			BatchReverseGeoCodingResult results = new BatchReverseGeoCodingResult(new BatchReverseGeoCodeResponse[] { response });
-
-			return results;
-		}
+			return new BatchReverseGeoCodingResult(new BatchReverseGeoCodeResponse[] { response });
+        }
 
 		/// <summary>
 		/// Method which handles batch reverse geocoding requests.
@@ -201,14 +189,12 @@ namespace cSharpGeocodio
 		/// <param name="fieldQueryString">Fields we wish to query for these points.</param>
 		private async Task<string> ReverseGeocodeWebRequest(string latLong, string fieldQueryString)
 		{
-			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
 
 			string queryString = PrepareWebQueryString(GeocodingOperationType.SingleReverse, latLong, fieldQueryString);
 
-			HttpClient client = new HttpClient();
-			client.BaseAddress = baseAddress;
+            string url = System.IO.Path.Combine(reverseGeocodeEndpoint, queryString);
 
-			HttpResponseMessage response = await client.GetAsync(queryString);
+            HttpResponseMessage response = await this._httpClient.GetAsync(url);
 
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
@@ -226,18 +212,16 @@ namespace cSharpGeocodio
 		/// <param name="fieldQueryString">Fields we wish to query for these points.</param>
 		private async Task<string> BatchReverseGeocodeWebRequest(string jsonPostData, string fieldQueryString)
 		{
-			Uri baseAddress = new Uri(this._reverseGeoCodeBaseUrl);
 
 			//Pass empty string as second parameter; locations to reverse geocode
 			//are passed as payload argument to HttpClient
 			string queryString = PrepareWebQueryString(GeocodingOperationType.BatchRevsere, "", fieldQueryString);
 
-			HttpClient client = new HttpClient();
-			client.BaseAddress = baseAddress;
+            string url = System.IO.Path.Combine(reverseGeocodeEndpoint, queryString);
 
-			StringContent payload = new StringContent(jsonPostData, Encoding.UTF8, "application/json");
+            StringContent payload = new StringContent(jsonPostData, Encoding.UTF8, "application/json");
 
-			HttpResponseMessage response = await client.PostAsync(queryString, payload);
+			HttpResponseMessage response = await this._httpClient.PostAsync(url, payload);
 
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
