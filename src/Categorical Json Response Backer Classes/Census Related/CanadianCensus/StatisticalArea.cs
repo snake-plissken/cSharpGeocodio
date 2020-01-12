@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cSharpGeocodio.src.Categorical_Json_Response_Backer_Classes.Census_Related.CanadianCensus
+namespace cSharpGeocodio.CanadanianCensus
 {
+    /// <summary>
+    /// Contains details related to StatCan or Riding fields.
+    /// </summary>
     public class StatisticalArea
     {
         public string Code { get; set; }

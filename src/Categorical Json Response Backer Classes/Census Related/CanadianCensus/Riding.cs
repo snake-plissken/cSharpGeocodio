@@ -5,9 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cSharpGeocodio.src.Categorical_Json_Response_Backer_Classes.Census_Related.CanadianCensus
+namespace cSharpGeocodio.CanadanianCensus
 {
-    class Riding
+    /// <summary>
+    /// Canadian census field for Canadian electoral district.  See: https://en.wikipedia.org/wiki/List_of_Canadian_federal_electoral_districts
+    /// </summary>
+    public class Riding
     {
         public string Code { get; set; }
         [JsonProperty("name_french")]

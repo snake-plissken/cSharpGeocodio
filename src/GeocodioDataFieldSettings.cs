@@ -36,6 +36,9 @@ namespace cSharpGeocodio
             , "acs-housing"
             , "acs-social"
             , "timezone"
+            //Canadian items below
+            , "riding"
+            , "statcan"
 
         };
 

@@ -5,9 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cSharpGeocodio.src.Categorical_Json_Response_Backer_Classes.Census_Related.CanadianCensus
+namespace cSharpGeocodio.CanadanianCensus
 {
-    class StatCan
+    /// <summary>
+    /// Census geographic units of Cana.  See: https://en.wikipedia.org/wiki/Census_geographic_units_of_Canada
+    /// </summary>
+    public class StatCan
     {
         public Division Division { get; set; }
         [JsonProperty("consolidated_subdivision")]

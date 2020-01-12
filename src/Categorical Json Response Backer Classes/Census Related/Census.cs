@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 namespace cSharpGeocodio
 {
-
+    /// <summary>
+    /// Contains items related to the US Census.
+    /// </summary>
 	public class Census
 	{
 
