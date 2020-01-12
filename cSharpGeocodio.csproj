@@ -34,6 +34,10 @@
   <ItemGroup>
     <Compile Include="src\Categorical Json Response Backer Classes\Census Related\ACS.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\Census Related\ACS_Meta.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\CanadianCensus\Division.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\CanadianCensus\Riding.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\CanadianCensus\StatCan.cs" />
+    <Compile Include="src\Categorical Json Response Backer Classes\Census Related\CanadianCensus\StatisticalArea.cs" />
     <Compile Include="src\Categorical Json Response Backer Classes\Census Related\Place.cs" />
     <Compile Include="src\GeocodingException.cs" />
     <Compile Include="src\GeoCoderV2.cs" />
