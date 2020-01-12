@@ -3,9 +3,9 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio.ForwardGeocodingObjects
 {
-	//
-	//Needed for response when geocoding single location
-	//
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
 	public class ForwardGeoCodeInput
 	{
 		private ForwardGeoCodeInput() { }

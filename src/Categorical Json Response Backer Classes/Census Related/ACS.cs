@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace cSharpGeocodio
 {
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.  Used when dealing with Census info.
+    /// </summary>
     public class ACS
     {
         [JsonProperty("meta")]

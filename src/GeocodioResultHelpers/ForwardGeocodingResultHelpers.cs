@@ -4,7 +4,10 @@ using cSharpGeocodio.ForwardGeocodingObjects;
 
 namespace cSharpGeocodio.GeocodioResultHelpers
 {
-	public static class ForwardGeocodingResultHelpers
+    /// <summary>
+    /// Helper object to transform results from Geocodio into keyed collections.
+    /// </summary>
+    public static class ForwardGeocodingResultHelpers
 	{
         /// <summary>
         /// Transforms batch forward geocode results into a dictionary keyed by the address that was queried.  Puts duplicate requests

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace cSharpGeocodio.GeocodioResultHelpers
 {
+    /// <summary>
+    /// Helper object to transform results from Geocodio into keyed collections.
+    /// </summary>
 	public static class ReverseGeocodingResultHelpers
 	{
         /// <summary>

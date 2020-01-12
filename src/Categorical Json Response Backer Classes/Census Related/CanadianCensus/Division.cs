@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace cSharpGeocodio.CanadanianCensus
 {
+    /// <summary>
+    /// JSON backer class used when querying Canadian census fields.
+    /// </summary>
     public class Division
     {
         public string Id { get; set; }

@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class SchoolDistricts
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class SchoolDistricts
 	{
 		private SchoolDistricts() { }
 

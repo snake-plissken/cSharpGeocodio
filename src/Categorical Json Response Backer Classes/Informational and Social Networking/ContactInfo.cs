@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class ContactInfo
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class ContactInfo
 	{
 		[JsonConstructor]
 		public ContactInfo(string url, string address, string phone

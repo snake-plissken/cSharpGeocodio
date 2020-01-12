@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class References
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class References
 	{
 		[JsonConstructor]
 		public References(string bioguideid, string thomasid

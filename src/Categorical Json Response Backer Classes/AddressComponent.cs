@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class AddressComponent
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class AddressComponent
 	{
 		[JsonConstructor]
 		public AddressComponent(string number, string predirectional

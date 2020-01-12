@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class FederalLegislator
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class FederalLegislator
 	{
 		[JsonConstructor]
 		public FederalLegislator(string type, Bio bio, ContactInfo contactinfo

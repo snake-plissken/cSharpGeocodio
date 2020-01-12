@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class CombinedStatisticalArea
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.  Used when dealing with Census info.
+    /// </summary>
+    public class CombinedStatisticalArea
 	{
 		[JsonConstructor]
 		public CombinedStatisticalArea(string name, string area_code)

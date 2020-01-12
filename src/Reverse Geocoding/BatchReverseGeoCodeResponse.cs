@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class BatchReverseGeoCodeResponse
+    /// <summary>
+    /// JSON backer classes used to deserialize responses from Geocodio.
+    /// </summary>
+    public class BatchReverseGeoCodeResponse
 	{
 		[JsonConstructor]
 		public BatchReverseGeoCodeResponse(string query, ReverseGeoCodeResult response)

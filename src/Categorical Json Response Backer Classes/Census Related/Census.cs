@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace cSharpGeocodio
 {
     /// <summary>
-    /// Contains items related to the US Census.
+    /// JSON backer class used when deserializing responses from Geocodio.  Contains items related to the US Census.
     /// </summary>
 	public class Census
 	{

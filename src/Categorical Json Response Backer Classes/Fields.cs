@@ -5,7 +5,10 @@ using cSharpGeocodio.CanadanianCensus;
 
 namespace cSharpGeocodio
 {
-	public class Fields
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class Fields
 	{
 
         /// <summary>

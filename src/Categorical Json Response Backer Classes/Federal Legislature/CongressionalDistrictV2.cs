@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio
 {
-	public class CongressionalDistrictV2
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class CongressionalDistrictV2
 	{
 		[JsonConstructor]
 		public CongressionalDistrictV2(string name, int districtnumber

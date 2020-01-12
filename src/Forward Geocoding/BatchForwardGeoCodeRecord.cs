@@ -3,7 +3,10 @@ using Newtonsoft.Json;
 
 namespace cSharpGeocodio.ForwardGeocodingObjects
 {
-	public class BatchForwardGeoCodeRecord
+    /// <summary>
+    /// JSON backer class used when deserializing responses from Geocodio.
+    /// </summary>
+    public class BatchForwardGeoCodeRecord
 	{
 		private BatchForwardGeoCodeRecord() { }
 
