@@ -48,7 +48,6 @@
     <Compile Include="src\Categorical Json Response Backer Classes\GeoCodeInfo.cs" />
     <Compile Include="src\GeocodingOperationType.cs" />
     <Compile Include="src\Reverse Geocoding\BatchReverseGeoCodeResponse.cs" />
-    <Compile Include="src\GeoCodioServerResponse.cs" />
     <Compile Include="src\Forward Geocoding\ForwardGeoCodeInput.cs" />
     <Compile Include="src\Forward Geocoding\ForwardGeoCodeResult.cs" />
     <Compile Include="src\Forward Geocoding\BatchForwardGeoCodeResult.cs" />

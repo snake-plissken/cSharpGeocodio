@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace cSharpGeocodio
 {
-
+    /// <summary>
+    /// A class which holds and validates the Geocodio datafield keys used when querying additional data items
+    /// such as Census or School district information.
+    /// </summary>
     public class GeocodioDataFieldSettings
     {
         //https://stackoverflow.com/questions/55485750/how-can-i-create-a-constant-hashset-in-c-sharp
@@ -36,7 +39,7 @@ namespace cSharpGeocodio
             , "acs-housing"
             , "acs-social"
             , "timezone"
-            //Canadian items below
+            //Canadian items
             , "riding"
             , "statcan"
 
@@ -85,31 +88,27 @@ namespace cSharpGeocodio
 
         public void SetFieldQueryStatus(string fieldKey, bool includeWhenQuerying)
         {
-            if (ValidGeocodioFields.Contains(fieldKey))
-            {
-                _fieldSettings[fieldKey] = includeWhenQuerying;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Field key {fieldKey} is not currently a valid Geocodio version {GeoCoderV2.ClientGeocodioApiVersion} data field key.");
-            }
+            this[fieldKey] = includeWhenQuerying;
         }
 
         public bool GetFieldQueryStatus(string fieldKey)
         {
-            if (ValidGeocodioFields.Contains(fieldKey))
-            {
-                return _fieldSettings[fieldKey];
-            }
-            else
-            {
-                throw new InvalidOperationException($"Field key {fieldKey} is not currently a valid Geocodio version {GeoCoderV2.ClientGeocodioApiVersion} data field key.");
-            }
+            return this[fieldKey];
         }
 
         public bool this[string fieldKey]
         {
-            get { return _fieldSettings.ContainsKey(fieldKey) && _fieldSettings[fieldKey]; }
+            get
+            {
+                if (ValidGeocodioFields.Contains(fieldKey))
+                {
+                    return _fieldSettings[fieldKey];
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Field key {fieldKey} is not currently a valid Geocodio version {GeoCoderV2.ClientGeocodioApiVersion} data field key.");
+                }
+            }
             set
             {
                 if (ValidGeocodioFields.Contains(fieldKey))

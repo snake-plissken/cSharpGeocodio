@@ -33,10 +33,7 @@ namespace cSharpGeocodio
                 }
                 else
                 {
-                    return String.Format("Other Unknown Status Code: {0}.  " +
-					                     "" +
-					                     "Please let Geocodio know about these if you see them."
-					                     , _returnStatusCode);
+                    return String.Format($"Other Status Code: {_returnStatusCode}.  Please let Geocodio know about these if you see them.");
                 }
             }
         }
