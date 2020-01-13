@@ -19,6 +19,6 @@ namespace cSharpGeocodio
         public string SurveyYears { get; set; }
 
         [JsonProperty("survey_duration_years")]
-        public string SurveyDurationYears {get;set;}
+        public string SurveyDurationYears { get; set; }
     }
 }

@@ -7,17 +7,17 @@ namespace cSharpGeocodio
     /// JSON backer class used when deserializing responses from Geocodio.
     /// </summary>
     public class StateLegislature
-	{
-		private StateLegislature() { }
+    {
+        private StateLegislature() { }
 
-		[JsonConstructor]
-		public StateLegislature(StateLegislator house, StateLegislator senate)
-		{
-			this.House = house;
-			this.Senate = senate;
-		}
+        [JsonConstructor]
+        public StateLegislature(StateLegislator house, StateLegislator senate)
+        {
+            this.House = house;
+            this.Senate = senate;
+        }
 
-		public StateLegislator House { get; set; }
-		public StateLegislator Senate { get; set; }
-	}
+        public StateLegislator House { get; set; }
+        public StateLegislator Senate { get; set; }
+    }
 }

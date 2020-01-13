@@ -14,7 +14,7 @@ namespace cSharpGeocodio
     {
         private int _returnStatusCode;
 
-		public GeocodingException (int returnStatusCode)
+        public GeocodingException(int returnStatusCode)
         {
             this._returnStatusCode = returnStatusCode;
         }

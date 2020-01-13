@@ -7,15 +7,15 @@ namespace cSharpGeocodio.ForwardGeocodingObjects
     /// JSON backer class used when deserializing responses from Geocodio.
     /// </summary>
     public class BatchForwardGeoCodeResult
-	{
-		private BatchForwardGeoCodeResult() { }
+    {
+        private BatchForwardGeoCodeResult() { }
 
-		[JsonConstructor]
-		public BatchForwardGeoCodeResult(BatchForwardGeoCodeRecord[] results)
-		{
-			Results = results;
-		}
+        [JsonConstructor]
+        public BatchForwardGeoCodeResult(BatchForwardGeoCodeRecord[] results)
+        {
+            Results = results;
+        }
 
-		public BatchForwardGeoCodeRecord[] Results { get; set; }
-	}
+        public BatchForwardGeoCodeRecord[] Results { get; set; }
+    }
 }

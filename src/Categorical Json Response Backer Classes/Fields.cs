@@ -9,37 +9,37 @@ namespace cSharpGeocodio
     /// JSON backer class used when deserializing responses from Geocodio.
     /// </summary>
     public class Fields
-	{
+    {
 
         /// <summary>
         /// US Federal legislature information.
         /// </summary>
 		[JsonProperty("congressional_districts")]
-		public CongressionalDistrictV2[] CongressionalDistricts { get; set; }
+        public CongressionalDistrictV2[] CongressionalDistricts { get; set; }
 
         /// <summary>
         /// US State legislature information.
         /// </summary>
 		[JsonProperty("state_legislative_districts")]
-		public StateLegislature StateLegislature { get; set; }
+        public StateLegislature StateLegislature { get; set; }
 
         /// <summary>
         /// US school district information.
         /// </summary>
 		[JsonProperty("school_districts")]
-		public SchoolDistricts SchoolDistricts { get; set; }
+        public SchoolDistricts SchoolDistricts { get; set; }
 
         /// <summary>
         /// Timezone information.  The standardized name follows the tzdb format. E.g. America/New_York.
         /// </summary>
 		[JsonProperty("timezone")]
-		public TimeZone TimeZone { get; set; }
+        public TimeZone TimeZone { get; set; }
 
         /// <summary>
         /// US Census information.
         /// </summary>
 		[JsonProperty("census")]
-		public Dictionary<string, Census> Census { get; set; }
+        public Dictionary<string, Census> Census { get; set; }
 
         /// <summary>
         /// American Commnity Survey, a more frequent version of the decennial census.  See: https://en.wikipedia.org/wiki/American_Community_Survey
