@@ -6,11 +6,11 @@ What is geocoding?  Per Wiki (https://en.wikipedia.org/wiki/Geocoding):
 
 A human readable address turns into a point (latitude and longitude) on the Earth's surface, a process known as forward geocoding.  A point of latitude and longitude turns into a human readable address, a process known as reverse geocoding.  Trust the process.
 
-Why, my good fellow, could this be useful?  Maybe you want to know the distance between Las Vegas and Mackinaw City?  You could reverse geocode the two cities and then use the pair of latitude and longitude corrdinates to calculate the distance.  The applications for this are numerous.
+Why, my good fellow, could this be useful?  Maybe you want to know the distance between Las Vegas and Mackinaw City if you were to walk in a direct path along the Earth's surface.  You could reverse geocode the two cities and then use the pair of latitude and longitude corrdinates to calculate the distance.  There are many applications for the information provided through the geocoding process.  Uber and Lyft and Waze and Google Maps could not work without it.
 
 Some code examples.  We can perform individual geocoding operations or send batches.
 
-### Create a client and a field settings object:
+### Create a client and a field settings object
 ```c#
 var client = new GeoCoderV2("your_api_key");
 
@@ -24,7 +24,7 @@ var fields = GeocodioDataFieldSettings.CreateDataFieldSettings(true);
 fields["census2010"] = false;
 ```
 
-### Forward geocoding:
+### Forward geocoding
 ```c#
 //Forward geocode a single address
 var forwardGeocodoResults = await client.ForwardGeocodeAsync("3850 S Las Vegas Blvd, Las Vegas, NV 89109", fields);
@@ -36,9 +36,14 @@ someAddresses.Add("2801 Westwood Dr, Las Vegas, NV 89109");
 someAddresses.Add("1352 Rufina Cir, Santa Fe, NM 87507");
 
 var batchforwardGeocodoResults = await client.ForwardGeocodeAsync(someAddresses, fields);
+
+//Get the coordinates.  ForwardGeocodeAsync returns the same type whether single or batch geocoding.
+//The GeoCodeInfo item in forwardGeocodoResults.Results[0].Response.Results[0] conains a lot of additional information.
+var latitude = forwardGeocodoResults.Results[0].Response.Results[0].Location.Latitude;
+var longitude = forwardGeocodoResults.Results[0].Response.Results[0].Location.Longitude;
 ```
 
-### Reverse geocoding:
+### Reverse geocoding
 ```c#
 //Reverse geocode a single point
 var reverseGeocodoResults = await client.ReverseGeocodeAsync("39.362136, -74.418693", fields);
@@ -50,13 +55,20 @@ someCoordinates.Add("43.080726, -70.740992");
 someCoordinates.Add("37.264944, -115.816437");
 
 var batchReverseGeocodoResults = await client.ReverseGeocodeAsync(someCoordinates, fields);
+
+//Get the address.  ReverseGeocodeAsync returns the same type whether single or batch geocoding.
+//The GeoCodeInfo item in reverseGeocodoResults.Results[0].Response.Results[0] conains a lot of additional information.
+var address = reverseGeocodoResults.Results[0].Response.Results[0].FormattedAddress;
 ```
 
-### Exceptions:
+### Notes On The Results From Geocodio
+The result items contain a field `Accuracy` which describes the accuracy of the item in the results.  The array is ordered so the most accurate results are listed first.  Geocoding is not a perfect science.  Depending on the areas you query, your results might be 100% accurate of off by a few hundred feet or two miles.  This is due to the way geocoding algorithms work (and all of them are susecptible to erronerous outputs).  In less densely popuated areas, the accuracy can vary more often.
+
+### Exceptions
 Both forward and reverse geocoding methods will throw a `GeocodingException` if Geocodio's servers return anything but a 200 OK status code.  This could be for a few reasons, the most common being 403s (check the API key), 422s (you sent something Geocodio can't handle) or 500s (error on Geocodio's side).  These exceptions will bubble up via an `AggregateException` so check the inner exception collection.
 
 ### Additional Data Fields
-Geocodio offers a collection of additional data fields (Census, Congree, Income, etc) associated with the points or addresses you are geocoding.  The `GeocodioDataFieldSettings` class is used to handle querying these additional data fields.  `GeocodioDataFieldSettings` objects can be created using its static contructor.  By default, all fields are set to a query status of false, which means no additional fields will be queried.  A status of true can be set for all of them when creating a fields object, and you can also turn on/off querying of the individual fields.  A static property `ValidGeocodioFields` contains the valid data field keys.  An exception will be thrown if you try to set or check a key which is not a valid Geocodio data field.  
+Geocodio offers a collection of additional data fields (Census, Congress, Income, etc) associated with the points or addresses you are geocoding.  The `GeocodioDataFieldSettings` class is used to handle querying these additional data fields.  `GeocodioDataFieldSettings` objects can be created using its static contructor.  By default, all fields are set to a query status of false, which means no additional fields will be queried.  A status of true can be set for all of them when creating a fields object, and you can also turn on/off querying of the individual fields.  A static property `ValidGeocodioFields` contains the valid data field keys.  An exception will be thrown if you try to set or check a key which is not a valid Geocodio data field.  
 
 Set them to true or false dependning on your needs:
 ```c#
@@ -67,11 +79,11 @@ fields["census2015"] = false;
 fields.SetFieldQueryStatus("census2011", true);
 fields.SetFieldQueryStatus("acs-economics", true)
 
-//We can also check the status of fields:
+//We can also check the status of fields.
 var toBeQueried = fields.GetFieldQueryStatus("census2011");
 
-//Exception will be thrown, because census1939 is not a valid Geocodio data field key:
-var onOff = fields.GetFieldQueryStatus("census1939");
+//Exception will be thrown, because census1939 is not a valid Geocodio data field key.
+var toBeQueried_Exception = fields.GetFieldQueryStatus("census1939");
 ```
 
 ### Note on The American Community Survey (ACS) Data Architecture
