@@ -82,6 +82,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Changlog.md" />
     <None Include="cSharpGeocodio.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
