@@ -1,127 +1,26 @@
-# A wrapper to access Geocodio, a geocoding service.  
+# A library to access Geocodio (https://geocod.io/), a geocoding service.  
 
-## Website for the service: https://geocod.io/
+What is geocoding?  Per Wiki (https://en.wikipedia.org/wiki/Geocoding):
 
-Usage and examples are below.
+*Geocoding is the process of taking input text, such as an address or the name of a place, and returning a latitude/longitude location on the Earth's surface for that place. Reverse geocoding, on the other hand, converts geographic coordinates to a description of a location, usually the name of a place or an addressable location.*
 
-Note on exceptions and errors from Geocodio:
+A human readable address turns into a point (latitude and longitude) on the Earth's surface, a process known as forward geocoding.  A point of latitude and longitude turns into a human readable address, a process known as reverse geocoding.  Trust the process.
 
-Wrap all calls in a try/catch for an AggregateException.  The inner exception is a GeocodingException with a property GeocodioErrorMessage which contains info on the error returned by Geocodio:
+Why, my good fellow, could this be useful?  Maybe you want to know the distance between Las Vegas and Mackinaw City?  You could reverse geocode the two cities and then use the pair of latitude and longitude corrdinates to calculate the distance.  The applications for this are numerous.
 
-```C#
-try {
-    //Sample using ForwardGeocodeAsync, same for everseGeocodeAsync
-    geocoder.ForwardGeocodeAsync(...)
-    }
-catch (AggregateException ex) {
-    GeocodingException gex = (GeocodingException)ex.InnerException;
-    gex.GeocodioErrorMessage;
-    }
-
-```
-
-Forward Gecoding:
+Some code examples:
 
 ```c#
-GeoCoderV2 geoCoder = new GeoCoderV2('Your Grocodio API key.  You get 2500 free lookups per day!');
+//Create a client object with your API key
+var client = new GeoCoderV2("your_api_key");
 
-//
-//Forward geocode a single address:
-//
-string singleAddress = "2100 East Market Street, Philadelphia, PA 19103";
+//Generate the fields settings object to use with our request.
+//Geocodio lets you query additional fields such as Census tract or Congressional district.
+//We can specify whether to query all of the fields or none of them.  Inidividual fields can be set after creation
+var fields = GeocodioDataFieldSettings.CreateDataFieldSettings(true);
+//Do not query for 2010 Census information
+fields["census2010"] = false;
 
-Task<BatchForwardGeoCodeResult> singleAddress = await geoCoder.ForwardGeocodeAsync(singleAddress
-, QueryCongressional.No
-, QueryStateLegislature.No
-, QuerySchoolDistrict.No
-, QueryCensusInfo.No
-, QueryTimeZone.No);
-                         
-BatchFowardGeocodeResult singleResult = singleAddress.Result;
-
-//Geocodio will often return multiple items in the Results 
-//property of the Response object, ordered by the most accurate.
-Location singleLatLong = single_result.Response.Results[0].Location;
-
-//
-//Batch forward geocoding
-//
-//Make a list of addresses...
-Task<BatchForwardGeoCodeResult> batchGeocode = await geoCoder.ForwardGeocodeAsync(list_of_addresses
-, QueryCongressional.No
-, QueryStateLegislature.No
-, QuerySchoolDistrict.No
-, QueryCensusInfo.No
-, QueryTimeZone.No);
-                         
-BatchForwardGeocodeResult batchResults = batchGeocode.Result;
-//Iterate through collection of results.
-//When batch geocoding, Geocodio returns the results in the same
-//order as found in the list_of_addresses you pass to the ForwardGeocodeAsync method.
-for(int i = 0; i++; i < batchResults.Results)
-{
-    BatchForwardGeoCodeRecord geoCodedItem = batchResults.Results[i];
-    string addressWhichWasGeocoded = geoCodedItem.Query;
-    Location latLong = geoCodedItem.Response.Results[0].Location;
-    //Add to database, add to queue, some other operation;
-}
+//Send the request!
+var forwardGeocodoResults = await client.ForwardGeocodeAsync("3850 S Las Vegas Blvd, Las Vegas, NV 89109", fields);
 ```
-
-Reverse Geocoding:
-
-```c#
-//
-//Reverse geocode a single point
-//
-
-string singlePoint = "39.9373426,-75.1865927";
-
-Task<BatchReverseGeoCodingResult> reversePoint = await gc.ReverseGeocodeAsync(singlePoint
-, QueryCongressional.No
-, QueryStateLegislature.No
-, QuerySchoolDistrict.Yes
-, QueryCensusInfo.No
-, QueryTimeZone.No);
-
-BatchReverseGeocodingResult singlePointResult = reversePoint.Result;
-ReverseGeocodeResult reverseGeocodeResult = singlePointResult.Results[0].Response.Results;
-string addressOfPoint = reverseGeocodeResult.Results[0].FormattedAddress;
-
-//
-//Batch reverse geocoding
-//
-
-List<string> batchReverseInputs = new List<string>();
-//Add points to list...
-Task<BatchReverseGeoCodingResult> batchReverse = await gc.ReverseGeocodeAsync(batchReverseInputs
-, QueryCongressional.No
-, QueryStateLegislature.No
-, QuerySchoolDistrict.Yes
-, QueryCensusInfo.No
-, QueryTimeZone.No);
-
-BatchReverseGeoCodingResult batchReverseResults = batchReverse.Result;
-//Iterate through the results
-//As with forward geocoding, results are returned in the same order as found
-//in the list of LatLong points we passed to the ReverseGeocodeAsync
-for (int i = 0; i < batchReverseResults.Length; i++)
-{
-    BatchReverseGeoCodeResponse batchResponse = batchReverseResults.Results[i];
-    ReverseGeoCodeResult resultsFromOneQuery = batchResponse.Response;
-    //Here, the actual results of the operation, ordered in terms
-    //of accuray
-    GeoCodeInfo[] geoCodedInfo = resultsFromOneQuery.Results;
-}
-
-```
-
-Design Notes/Stuff:
-
-1. Remaining To-Do:
-  * Add some stuff to ease access properties the actual geocoding responses.  BatchForwardGeoCodeResult and BatchReverseGeoCodingResult are clunky little guys at the moment.  This is the next priority.
-  * While the JSON backer classes have been cleaned up, the backer classes for the optional fields (e.g Census Tract Info) still need to be cleaned up
-2. Design Info/Notes/Thoughts:
-  * The Christmas 2017 commits made some substantial changes.  My apologies if they broke anything but I was pretty sure no one was using this.
-  * The goals were with these changes were to condense the geocoding functions and to return the same types from the forward and reverse mthods, respectively, i.e. the forward and batch forward methods each return a `Task<BatchForwardGeoCodeResult>` object
-  * I considered writing the geocoding methods to take interfaces but it seemed fine to just use strings or lists of strings instead
-  * I also thought of using named/optional parameters in these methods but I felt it disguised, too much, the intent when calling these methods.  It's easier to see what your call is doing when you see the field enumerations declared in the method calls
