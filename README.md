@@ -16,7 +16,9 @@ Some code examples are below.  We can perform individual geocoding operations or
 
 ### Create a client and a field settings object
 ```c#
-var client = new GeoCoderV2("your_api_key");
+//First paramater is our API key, second is the client type we wish to create.
+//Geocodio offers a special HIPAA endpoint when needing to geocodio sensitive information.  See their website for additional details.
+var client = new GeoCoderV2("your_api_key", ApiClientType.RegularApi);
 
 //Generate the fields settings object to use with our request.
 //Geocodio lets you query additional fields such as Census tract or Congressional district.
