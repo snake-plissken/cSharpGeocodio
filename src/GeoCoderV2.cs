@@ -11,6 +11,15 @@ using cSharpGeocodio.ForwardGeocodingObjects;
 namespace cSharpGeocodio
 {
     /// <summary>
+    /// Used for configuring Geocoder client type.
+    /// </summary>
+    public enum ApiClientType
+    {
+        RegularApi,
+        HippaApi
+    }
+
+    /// <summary>
     /// Client object used to conect to and interface with Geocodio.
     /// </summary>
     public class GeoCoderV2
@@ -18,18 +27,30 @@ namespace cSharpGeocodio
         private string _apiKey;
         private HttpClient _httpClient;
 
+        const string regularApiBase = "https://api.geocod.io/";
+        const string hippaApiBase = "https://api-hipaa.geocod.io/";
         const string forwardGeocodeEndpoint = "geocode/";
         const string reverseGeocodeEndpoint = "reverse/";
+        public const string ClientGeocodioApiVersionPrefix = "v1.4";
 
-        public static string ClientGeocodioApiVersion { get; } = "v1.4";
+        public string ClientGeocodioApiUrl { get; }
+        public ApiClientType ClientType { get; }
 
-        public static string GeocodioApiBaseUrl { get; } = $"https://api.geocod.io/{ClientGeocodioApiVersion}/";
-
-        public GeoCoderV2(string apiKey)
+        public GeoCoderV2(string apiKey, ApiClientType geocodioClientType)
         {
             this._apiKey = apiKey;
+            if (geocodioClientType == ApiClientType.RegularApi)
+            {
+                ClientGeocodioApiUrl = System.IO.Path.Combine(regularApiBase, ClientGeocodioApiVersionPrefix);
+                ClientType = geocodioClientType;
+            }
+            else
+            {
+                ClientGeocodioApiUrl = System.IO.Path.Combine(hippaApiBase, ClientGeocodioApiVersionPrefix);
+                ClientType = geocodioClientType;
+            }
             this._httpClient = new HttpClient();
-            this._httpClient.BaseAddress = new Uri(GeocodioApiBaseUrl);
+            this._httpClient.BaseAddress = new Uri(ClientGeocodioApiUrl);
         }
 
         /// <summary>

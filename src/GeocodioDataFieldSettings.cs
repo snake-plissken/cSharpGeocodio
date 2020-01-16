@@ -100,7 +100,7 @@ namespace cSharpGeocodio
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Field key {fieldKey} is not currently a valid Geocodio version {GeoCoderV2.ClientGeocodioApiVersion} data field key.");
+                    throw new InvalidOperationException($"Field key {fieldKey} is not currently a known valid Geocodio data field key.");
                 }
             }
             set
@@ -111,7 +111,7 @@ namespace cSharpGeocodio
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Field key {fieldKey} is not currently a valid Geocodio version {GeoCoderV2.ClientGeocodioApiVersion} data field key.");
+                    throw new InvalidOperationException($"Field key {fieldKey} is not currently a known valid Geocodio data field key.");
                 }
             }
         }
