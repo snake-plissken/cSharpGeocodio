@@ -9,15 +9,15 @@ namespace cSharpGeocodio
     public class Location
     {
         [JsonConstructor]
-        public Location(float latitude, float longitude)
+        public Location(decimal latitude, decimal longitude)
         {
             Latitude = latitude;
             Longitude = longitude;
         }
 
         [JsonProperty("lat")]
-        public float Latitude { get; set; }
+        public decimal Latitude { get; set; }
         [JsonProperty("lng")]
-        public float Longitude { get; set; }
+        public decimal Longitude { get; set; }
     }
 }

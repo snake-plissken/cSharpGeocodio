@@ -16,6 +16,7 @@
   ### Minor
   - Adjusted wrapper helper methods which transform responses from Geocodio into dictionaries; now they just append duplicate queries to the response collections
   - Removed some detritus i.e. any objects/models which are no longer nedded
+  - Changed Location object to use decimals for latitude and longitude instead of floats
   ### Major
   - Geocoder client
     - Changed it to use a single HttpClient per instance, before it was creating a new HttpClient on each method call

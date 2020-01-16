@@ -54,9 +54,7 @@ namespace cSharpGeocodio
 
         /// <summary>
         /// Create a fields object to use when sending requests to Geocodio.  This object controls which data 
-        /// fields (census, Congress, etc.) are queried when sending requests.  Note: if you set true for all fields,
-        /// "cd" and "census" will be disabled.  Geocodio treats each as meaning data for the current year (i.e. if you sent
-        /// a query in 2019, fields "census2019" and "census" both refer to the same 2019 census.)
+        /// fields (census, Congress, etc.) are queried when sending requests.
         /// </summary>
         /// <param name="defaultAllFieldsStatusToInclude"></param>
         /// <returns></returns>
@@ -70,10 +68,6 @@ namespace cSharpGeocodio
                 {
                     FieldSettings.Add(key, defaultAllFieldsStatusToInclude);
                 }
-
-                //Disable these two fields because we set all fields to true; don't want to dupe requests
-                FieldSettings["cd"] = false;
-                FieldSettings["census"] = false;
             }
             else
             {
