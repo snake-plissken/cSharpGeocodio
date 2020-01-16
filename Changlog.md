@@ -1,8 +1,8 @@
 # Version 2.0 - 20190114
 
 ## High Level Overview
-  - Support for Geocodio's v1.4 API
-  - Added support for the new Geocodio data fields i.e. ACS, Canadian Census
+  - Support for Geocodio's v1.4 API, including HIPAA functionality
+  - Added support for some of the newer Geocodio data fields i.e. ACS, Canadian Census
   - Completely revamped the way additional data fields are queried
   - Improved inner workings of Geocoder client 
 
@@ -19,10 +19,13 @@
   - Changed Location object to use decimals for latitude and longitude instead of floats
   ### Major
   - Geocoder client
+	- Added HIPAA API functionality
+	- Adjusted constructor to take additional client type parameter so you can make a regular client or HIPAA client
+	- Cleaned up/renamed some properties and fields
     - Changed it to use a single HttpClient per instance, before it was creating a new HttpClient on each method call
     - Cdded better error handling so any non 200 OK Http status codes will throw
     - Changed all geocoding methods to use new field settings object which controls how the client queries for additional data fields (census, congressional district, etc.)
   - GeocodioDataFieldSettings
     - This object now controls how the additional data fields are queried
     - Validates setting and checking the status of the fields against known and valid Geocodio fields
-    - Each geocodiong method on the client takes one of these objects as a parameter; we not longer pass in an enum for each additional data field
+    - Each geocodiong method on the client takes one of these objects as a parameter; we no longer pass in an enum for each additional data field
