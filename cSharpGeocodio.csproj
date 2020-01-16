@@ -85,6 +85,7 @@
     <None Include="Changlog.md" />
     <None Include="cSharpGeocodio.nuspec" />
     <None Include="packages.config" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
