@@ -31,7 +31,7 @@ namespace cSharpGeocodio
         const string hippaApiBase = "https://api-hipaa.geocod.io/";
         const string forwardGeocodeEndpoint = "geocode/";
         const string reverseGeocodeEndpoint = "reverse/";
-        public const string ClientGeocodioApiVersionPrefix = "v1.4";
+        public const string ClientGeocodioApiVersionPrefix = "v1.5";
 
         public string ClientGeocodioApiUrl { get; }
         public ApiClientType ClientType { get; }
